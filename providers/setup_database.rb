@@ -1,12 +1,11 @@
-# Cookbook Name:: co-cloudstack
-# Provider:: init_db
+# Cookbook Name:: cloudstack
+# Provider:: setup_database
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
 #
 # Copyright:: Copyright (c) 2014 CloudOps.com
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.require "system_vm_template"
-
+# you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
@@ -34,14 +33,6 @@ action :create do
     end
   end
 end
-
-#user = "cloud"
-#password = "password"
-#root_user = "root"
-#root_password = "ilikerandompasswords"
-#ip = "localhost"
-#management_server_key = password
-#database_key = password
 
 def load_current_resource
   @current_resource = Chef::Resource::CloudstackSetupDatabase.new(@new_resource.name)

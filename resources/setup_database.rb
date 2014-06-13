@@ -23,12 +23,12 @@ actions :create
 
 default_action :create
 
-attribute :ip               , :name_attribute => true, :kind_of => String
-attribute :user             , :kind_of => String, :default => "cloud"
-attribute :password         , :kind_of => String, :default => "password"
-attribute :root_user        , :kind_of => String, :default => "root"
-attribute :root_password    , :kind_of => String, :default => "ilikerandompasswords"
+attribute :ip                   , :name_attribute => true, :kind_of => String
+attribute :user                 , :kind_of => String, :default => "cloud"
+attribute :password             , :kind_of => String, :default => "password"
+attribute :root_user            , :kind_of => String, :default => "root"
+attribute :root_password        , :kind_of => String, :default => "ilikerandompasswords"
 attribute :management_server_key, :kind_of => String, :default => "password"
-attribute :database_key     , :kind_of => String, :default => "password"   
+attribute :database_key         , :kind_of => String, :default => "password"   
 
 attr_accessor :exists

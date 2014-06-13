@@ -1,4 +1,4 @@
-# Cookbook Name:: co-cloudstack3
+# Cookbook Name:: cloudstack
 # Recipe:: management_server
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
 #
@@ -61,9 +61,3 @@ template node['cloudstack']['nofile_limit_file'] do
 end
 
 
-
-
-#bash "cloudstack-setup-management" do
-#  code "/usr/bin/cloudstack-setup-management"
-#  not_if { ::File.exists?("/etc/cloudstack/management/tomcat6.conf") }
-#end

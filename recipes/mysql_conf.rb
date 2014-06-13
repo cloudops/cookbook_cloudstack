@@ -1,5 +1,5 @@
-# Cookbook Name:: co-cloudstack3
-# Recipe:: mysql-conf
+# Cookbook Name:: cloudstack
+# Recipe:: mysql_conf
 #
 # Copyright:: Copyright (c) 2014 CloudOps.com
 #

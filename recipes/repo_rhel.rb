@@ -1,4 +1,4 @@
-# Cookbook Name:: co-cloudstack3
+# Cookbook Name:: cloudstack
 # Recipe:: default
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
 #

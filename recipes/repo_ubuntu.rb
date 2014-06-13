@@ -1,5 +1,5 @@
-# Cookbook Name:: co-cloudstack3
-# Recipe:: default
+# Cookbook Name:: cloudstack
+# Recipe:: repo_ubuntu
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
 #
 # Copyright:: Copyright (c) 2014 CloudOps.com

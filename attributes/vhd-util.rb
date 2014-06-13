@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: co-cloudstack3
+# Cookbook Name:: cloudstack
 # Attribute:: vhd-util
 #
 # Copyright:: Copyright (c) 2014 CloudOps.com

@@ -1,5 +1,4 @@
-#
-# Cookbook Name:: co-cloudstack3
+# Cookbook Name:: cloudstack
 # Recipe:: vhd-util
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
 #
@@ -22,7 +21,7 @@
 
 remote_file "#{node["cloudstack"]["vhd-util_path"]}/vhd-util" do
     source node["cloudstack"]["vhd-util_url"] 
-  mode 0755
+    mode 0755
     action :create_if_missing
 end
 

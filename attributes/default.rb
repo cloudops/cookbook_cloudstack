@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: co-cloudstack
+# Cookbook Name:: cloudstack
 # Attribute:: default
 #
 # Copyright:: Copyright (c) 2014 CloudOps.com
