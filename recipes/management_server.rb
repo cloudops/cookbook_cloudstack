@@ -20,7 +20,7 @@
 # Install CloudStack Management Server and perform required tunings.
 ####
 
-include_recipe "co-cloudstack3::repo"
+include_recipe "cloudstack::repo"
 
 package "cloudstack-management" do
    action :install
@@ -28,7 +28,7 @@ package "cloudstack-management" do
      version node['cloudstack']['version']
    end
 end
-include_recipe "co-cloudstack3::vhd-util"
+include_recipe "cloudstack::vhd-util"
 
 
 #

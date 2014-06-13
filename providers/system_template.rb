@@ -18,6 +18,7 @@
 #
 # Download system template for initial deployment of CloudStack
 
+require 'fileutils'
 include Chef::Mixin::ShellOut
 
 
@@ -34,17 +35,34 @@ def load_current_resource
   @current_resource.hypervisor(@new_resource.hypervisor)
   @current_resource.url(@new_resource.url)
   @current_resource.nfs_path(@new_resource.nfs_path)
+  @current_resource.nfs_server(@new_resource.nfs_server)
+
 #  if cloudstack_is_running?
 #    @current_resource.exists = true
 #  end
 end
 
+# Create path
+unless Dir.exists?(@current_resource.nfs_path)
+  FileUtils.mkdir_p @current_resource.nfs_path
+end
 
-# mount NFS share on MGT server if not served from local disk
-### mount node["cloudstack"]['secondary']['mgt_path'] do
-###   device "#{node["cloudstack"]['secondary']['host']}:#{node["cloudstack"]['secondary']['path']}"
-###   fstype "nfs"
-###   options "rw"
-###   action [:mount]
-###   not_if {  node["cloudstack"]['secondary']['host'] == node.name or node["cloudstack"]['secondary']['host'] == node["ipaddress"] }
-### end
+# Mount NFS share if required
+unless @current_resource.nfs_server == node.name or @current_resource.nfs_server == node["ipaddress"] or @current_resource.nfs_server == "localhost"
+  mount @current_resource.nfs_path do
+    device "#{@current_resource.nfs_server}:#{@current_resource.nfs_path}"
+    fstype "nfs"
+    options "rw"
+    action [:mount]
+  end
+end
+
+def download_systemvm_template
+  # Create database configuration for cloudstack management server that will use and existing database.
+  download_cmd = "/usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt  -m #{@current_resource.nfs_path} -u #{@current_resource.url} -h #{@current_resource.hypervisor} -F"
+  download_template = Mixlib::ShellOut.new(download_cmd)
+  download_template.run_command
+  if download_template.exitstatus == 0
+
+  end
+end

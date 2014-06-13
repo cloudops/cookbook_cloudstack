@@ -24,6 +24,7 @@ default_action :create
 
 attribute :hypervisor    , :name_attribute => true, :kind_of => String
 attribute :nfs_path      , :kind_of => String, :default => "/export/secondary"
+attribute :nfs_server    , :kind_of => String, :default => "localhost"
 attribute :url           , :kind_of => String
 
 attr_accessor :exists

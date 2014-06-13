@@ -26,3 +26,9 @@ cloudstack_setup_database 'localhost' do
   password 'password'
   action :create
 end
+
+cloudstack_system_template 'xenserver' do
+  nfs_path "/data/secondary"
+  nfs_server  "localhost"
+  url "http://download.cloud.com/templates/4.3/systemvm64template-2014-01-14-master-xen.vhd.bz2" 
+end

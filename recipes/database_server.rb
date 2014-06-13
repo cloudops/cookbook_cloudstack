@@ -24,5 +24,5 @@ node.set['mysql']['data_dir'] = '/data/mysql'
 
 include_recipe 'mysql::server'
 
-include_recipe 'co-cloudstack3::mysql_conf'
+include_recipe 'cloudstack::mysql_conf'
 
