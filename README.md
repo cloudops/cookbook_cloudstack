@@ -1,7 +1,7 @@
-co-cloudstack3 Cookbook
-=======================
+cloudstack Cookbook
+===================
 
-Provide Chef Installion and configuration tools for Apache Cloudstack (cloud orchestrator). A wrapper cookbook is prefered in order to Install Apache CloudStack properly, see cloudstack_wrapper cookbook as example.
+Provide Chef Installion and configuration tools for Apache Cloudstack (cloud orchestrator). A wrapper cookbook is prefered in order to Install Apache CloudStack properly, see [cloudstack_wrapper cookbook](https://github.com/cloudops/cookbook_cloudstack_wrapper) as example.
 
 
 > Work in progress. 
@@ -12,7 +12,6 @@ About Apache Cloudstack
 -----------------------
 
 More info on: http://cloudstack.apache.org/
-
 
 
 

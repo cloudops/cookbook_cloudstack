@@ -9,6 +9,7 @@ version          '3.0.0'
 depends "yum", "> 3.0"
 depends "apt", "> 2.0"
 depends "mysql", "> 5.2.0"
+depends "sudo", ">= 2.6.0"
 
 supports 'centos'
 supports 'redhat'
