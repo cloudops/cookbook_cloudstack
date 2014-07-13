@@ -1,11 +1,12 @@
-co-cloudstack CHANGELOG
-=======================
+cloudstack CHANGELOG
+====================
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
 3.0.0
 -----
 - pdion891 - Complete rewrite of co-cloudstack as cloudstack using Chef LWRP
+- pdion891 - Rename cookbook from co-cloudstack to cloudstack.
 
 2.0.3
 -----

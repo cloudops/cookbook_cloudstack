@@ -1,4 +1,4 @@
-# Cookbook Name:: co-cloudstack
+# Cookbook Name:: cloudstack
 # Resource:: system_template
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
 #
