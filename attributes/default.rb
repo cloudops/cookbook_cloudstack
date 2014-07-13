@@ -32,3 +32,5 @@ end
 default['cloudstack']['yum_repo'] = "http://cloudstack.apt-get.eu/rhel/#{node['cloudstack']['relase_major']}/"
 # apt repo URL
 default['cloudstack']['apt_repo'] = "http://cloudstack.apt-get.eu/ubuntu"
+
+

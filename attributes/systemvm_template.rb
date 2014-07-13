@@ -1,4 +1,3 @@
-#
 # Cookbook Name:: cloudstack
 # Attribute:: systemvm_template
 #

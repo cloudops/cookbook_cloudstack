@@ -1,7 +1,7 @@
 co-cloudstack3 Cookbook
 =======================
 
-Install and configure Apache Cloudstack cloud orchestrator.
+Provide Chef Installion and configuration tools for Apache Cloudstack (cloud orchestrator). A wrapper cookbook is prefered in order to Install Apache CloudStack properly, see cloudstack_wrapper cookbook as example.
 
 
 > Work in progress. 
@@ -33,6 +33,8 @@ e.g.
 License and Authors
 -------------------
 - Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
+
+Some snippets have been taken from: [schubergphilis/cloudstack-cookbook](https://github.com/schubergphilis/cloudstack-cookbook)
 - Author:: Roeland Kuipers (<rkuipers@schubergphilis.com>)  
 - Author:: Sander Botman (<sbotman@schubergphilis.com>)
 - Author:: Hugo Trippaers (<htrippaers@schubergphilis.com>)

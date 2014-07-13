@@ -18,6 +18,7 @@
 #
 
 include Chef::Mixin::ShellOut
+include Chef::Recipe::Cloudstack
 
 
 action :create do
@@ -26,7 +27,7 @@ action :create do
   unless @current_resource.exists
     # 1. check if database exist, if so create connection config but do not init db.
     # 2. if db not exist, create db and create connection
-    if db_exist?
+    if db_exist?(@current_resource.ip, @current_resource.user, @current_resource.password)
       init_config_database
     else
       init_database
@@ -76,17 +77,7 @@ end
 def dbconf_exist?
   # test if db.properties as been modified from default installation file. if password encrypted, then we step there to not break anything.
   Chef::Log.debug "Checking to see if database config db.properties as been configured"
-  conf_exist = system("cat /etc/cloudstack/management/db.properties |grep \"ENC(\"")
+  conf_exist = shell_out("cat /etc/cloudstack/management/db.properties |grep \"ENC(\"")
   #conf_exist return true if file is ready to use.
 end
 
-def db_exist?
-  # test if database exist and is reachable
-  Chef::Log.debug "Checking to see if database cloud exist on: '#{@current_resource.ip}'"
-  db_exist = system("mysql -u #{@current_resource.user} -p#{@current_resource.password} -e 'show databases;'|grep cloud")
-end
-
-def db_connection_exist?
-  Chef::Log.debug "Checking to see if user #{@current_resource.user} can access MySQL server: '#{@current_resource.ip}'"
-  user_can_connect = system("mysql -u  #{@current_resource.user} -p #{@current_resource.password} -e 'show databases;'")
-end

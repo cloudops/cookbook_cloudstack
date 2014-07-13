@@ -45,6 +45,7 @@ template node['cloudstack']['nproc_limit_file'] do
             :recipe_file   => (__FILE__).to_s.split("cookbooks/").last,
             :template_file => source.to_s
 end
+
 #
 # Set nofile limits for user cloud
 #

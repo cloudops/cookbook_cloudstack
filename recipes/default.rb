@@ -21,7 +21,7 @@ include_recipe "cloudstack::management_server"
 
 cloudstack_setup_database 'localhost' do
   root_user 'root'
-  root_password 'ilikerandompasswords'
+  root_password 'cloud'
   user 'cloud'
   password 'password'
   action :create
@@ -30,5 +30,7 @@ end
 cloudstack_system_template 'xenserver' do
   nfs_path "/data/secondary"
   nfs_server  "localhost"
-  url "http://download.cloud.com/templates/4.3/systemvm64template-2014-01-14-master-xen.vhd.bz2" 
+  db_user "cloud"
+  db_password "password"
+  db_host "localhost"
 end

@@ -22,23 +22,27 @@
 require 'socket'
 require 'timeout'
 
-#class Chef
-#  class Recipe
 
 module Cloudstack
   
-      def port_open(ip, port, seconds=1)
-        Timeout::timeout(seconds) do
-          begin
-            TCPSocket.new(ip, port).close
-            true
-          rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
-            false
-          end
-        end
-      rescue Timeout::Error
+  def port_open(ip, port, seconds=1)
+    Timeout::timeout(seconds) do
+      begin
+        TCPSocket.new(ip, port).close
+        true
+      rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
         false
       end
+    end
+  rescue Timeout::Error
+    false
+  end
 
-#  end
+  # Test if CloudStack Database already exist
+  def db_exist?(db_host="localhost", db_user="cloud", db_password="password")
+    # test if database exist and is reachable
+    Chef::Log.debug "Checking to see if database cloud exist on: '#{db_host}'"
+    db_exist = shell_out("mysql -h #{db_host} -u #{db_user} -p#{db_password} -e 'show databases;'|grep cloud")
+  end
+
 end
