@@ -5,7 +5,7 @@ This file is used to list changes made in each version of the co-cloudstack cook
 
 3.0.0
 -----
-- pdion891 - Complete rewrite of co-cloudstack as cloudstack using Chef LWRP 
+- pdion891 - Complete rewrite of co-cloudstack as cloudstack using Chef LWRP
 
 2.0.3
 -----

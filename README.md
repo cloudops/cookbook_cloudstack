@@ -1,11 +1,13 @@
 cloudstack Cookbook
 ===================
 
-Provide Chef Installion and configuration tools for Apache Cloudstack (cloud orchestrator). A wrapper cookbook is prefered in order to Install Apache CloudStack properly, see [cloudstack_wrapper cookbook](https://github.com/cloudops/cookbook_cloudstack_wrapper) as example.
+Install and configure [Apache Cloudstack](http://cloudstack.apache.org) using [Chef](http://www.getchef.com/). A wrapper cookbook is prefered in order to Install Apache CloudStack properly, see [cloudstack_wrapper cookbook](https://github.com/cloudops/cookbook_cloudstack_wrapper) as example.
 
 
 > Work in progress. 
 > This is a complete rework of the co-cloudstack cookbook to use LWRP.
+
+Tested on CentOS 6.5 and Ubuntu 14.04
 
 
 About Apache Cloudstack
@@ -13,6 +15,14 @@ About Apache Cloudstack
 
 More info on: http://cloudstack.apache.org/
 
+Requirements
+------------
+
+#### cookbooks
+- `yum` - packages management
+- `apt` - packages management
+- `mysql` - for MySQL database server and client
+- `sudo` - to configure sudoers for user "cloud"
 
 
 Contributing
