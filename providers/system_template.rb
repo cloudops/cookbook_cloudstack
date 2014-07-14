@@ -43,24 +43,20 @@ def load_current_resource
   @current_resource.db_password(@new_resource.db_password)
   @current_resource.db_host(@new_resource.db_host)
 
-    if @new_resource.url.nil?
-      if db_exist?(@current_resource.db_host, @current_resource.db_user, @current_resource.db_password)
-        @current_resource.url(`mysql -h #{@current_resource.db_host} --user=#{@current_resource.db_user} --password=#{@current_resource.db_password} --skip-column-names -U cloud -e 'select max(url) from cloud.vm_template where type = \"SYSTEM\" and hypervisor_type = \"#{@current_resource.hypervisor}\" and removed is null'`.chomp)
-      else
-        Chef::Log.error "Database not configured. Cannot retrieve Template URL"
+  if @new_resource.url.nil?
+    if db_exist?(@current_resource.db_host, @current_resource.db_user, @current_resource.db_password)
+      @current_resource.url(`mysql -h #{@current_resource.db_host} --user=#{@current_resource.db_user} --password=#{@current_resource.db_password} --skip-column-names -U cloud -e 'select max(url) from cloud.vm_template where type = \"SYSTEM\" and hypervisor_type = \"#{@current_resource.hypervisor}\" and removed is null'`.chomp)
+      template_id = get_template_id
+      if ::File.exist?("#{@current_resource.nfs_path}/template/tmpl/1/#{template_id}/template.properties")
+        @current_resource.exists = true
       end
     else
-      @current_resource.url(@new_resource.url)
+      Chef::Log.error "Database not configured. Cannot retrieve Template URL"
     end
-    
-    template_id = get_template_id
-    if ::File.exist?("#{@current_resource.nfs_path}/template/tmpl/1/#{template_id}/template.properties")
-      @current_resource.exists = true
-    end
-
-#  if cloudstack_is_running?
-#    @current_resource.exists = true
-#  end
+  else
+    @current_resource.url(@new_resource.url)
+  end
+  
 
 end
 
@@ -68,9 +64,11 @@ end
 def get_template_id
   # get template ID from database to check path
   Chef::Log.debug "Retrieve template ID from database"
-  template_id = `mysql -h #{@current_resource.db_host} --user=#{@current_resource.db_user} --password=#{@current_resource.db_password} --skip-column-names -U cloud -e 'select max(id) from cloud.vm_template where type = \"SYSTEM\" and hypervisor_type = \"#{@current_resource.hypervisor}\" and removed is null'`.chomp
-  Chef::Log.debug "template id = #{template_id}"
-  return template_id
+  template_cmd = "mysql -h #{@current_resource.db_host} --user=#{@current_resource.db_user} --password=#{@current_resource.db_password} --skip-column-names -U cloud -e 'select max(id) from cloud.vm_template where type = \"SYSTEM\" and hypervisor_type = \"#{@current_resource.hypervisor}\" and removed is null'"
+  template_id = Mixlib::ShellOut.new(template_cmd)
+  template_id.run_command
+  Chef::Log.debug "template id = #{template_id.stdout.chomp}"
+  return template_id.stdout.chomp
 end
 
 

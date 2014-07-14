@@ -27,3 +27,9 @@ apt_repository "cloudstack" do
   key "http://cloudstack.apt-get.eu/release.asc"
   action :add
 end
+
+
+package 'libmysql-java' do
+  action :install
+  #only_if { node['platform_version'] == "14.04" }
+end

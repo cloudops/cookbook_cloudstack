@@ -40,9 +40,19 @@ module Cloudstack
 
   # Test if CloudStack Database already exist
   def db_exist?(db_host="localhost", db_user="cloud", db_password="password")
-    # test if database exist and is reachable
-    Chef::Log.debug "Checking to see if database cloud exist on: '#{db_host}'"
-    db_exist = shell_out("mysql -h #{db_host} -u #{db_user} -p#{db_password} -e 'show databases;'|grep cloud")
+    conn_db_test = "mysql -h #{db_host} -u #{db_user} -p#{db_password} -e 'show databases;'|grep cloud"
+    conn_db_test_out = Mixlib::ShellOut.new(conn_db_test)
+    conn_db_test_out.run_command
+    if conn_db_test_out.exitstatus == 0
+      return true
+    else
+      return false
+    end 
+  end
+
+  def cloudstack_is_running?
+    # Test if CloudStack Management server is running on localhost.
+    port_open('localhost', 8080)
   end
 
 end
