@@ -17,13 +17,17 @@
 # limitations under the License.
 #
 # install and configure cloudstack-usage service.
+# This recipe can be use as is in cookbook wrapper (include_recipe 'cloudstack::usage')
+# This service depend on cloudstack-management and MUST run on a management server.
 
 package "cloudstack-usage" do
    action :install
+#   only_if { node.recipes.include?('cloudstack::management_server') }
 end
 
 
-# service "cloudstack-usage" do
-#   supports :restart => true, :status => true, :start => true, :stop => true
-#   action [ :enable, :start ]
-# end
+service "cloudstack-usage" do
+   supports :restart => true, :status => true, :start => true, :stop => true
+   action [ :enable, :start ]
+   only_if { node.recipes.include?('cloudstack::management_server') }
+end

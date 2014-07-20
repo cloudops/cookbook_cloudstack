@@ -4,7 +4,8 @@ cloudstack Cookbook
 Install and configure [Apache Cloudstack](http://cloudstack.apache.org) using [Chef](http://www.getchef.com/). A wrapper cookbook is prefered in order to Install Apache CloudStack properly, see [cloudstack_wrapper cookbook](https://github.com/cloudops/cookbook_cloudstack_wrapper) as example.
 
 
-> Work in progress. 
+> Work in progress.
+>
 > This is a complete rework of the co-cloudstack cookbook to use LWRP.
 
 Tested on CentOS 6.5 and Ubuntu 14.04
@@ -12,6 +13,8 @@ Tested on CentOS 6.5 and Ubuntu 14.04
 
 About Apache Cloudstack
 -----------------------
+
+Apache CloudStack is open source software designed to deploy and manage large networks of virtual machines, as a highly available, highly scalable Infrastructure as a Service (IaaS) cloud computing platform.
 
 More info on: http://cloudstack.apache.org/
 

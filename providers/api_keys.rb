@@ -1,5 +1,5 @@
 # Cookbook Name:: cloudstack
-# Provider:: generate_api_keys
+# Provider:: api_keys
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
 #
 # Copyright:: Copyright (c) 2014 CloudOps.com
