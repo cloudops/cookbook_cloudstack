@@ -31,7 +31,6 @@ end
 
 action :create do
   #load_current_resource
-  
   if cloudstack_is_running?
     if @current_resource.username == "admin"
       admin_keys = retrieve_admin_keys(@current_resource.url, @current_resource.password)
@@ -73,7 +72,6 @@ action :reset do
 end
 
 def generate_admin_keys(url, password)
-
   login_params = { :command => "login", :username => "admin", :password => password, :response => "json" }    
   # create sessionkey and cookie of the api session initiated with username and password
   uri = URI(url)
