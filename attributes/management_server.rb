@@ -21,14 +21,6 @@
 ####
 # Apache repos:
 ###############
-# version = version of package to install if not define = latest from the repo
-default['cloudstack']['version'] = ""
-# relase_major = release version, used for the repo URL
-if node['cloudstack']['version'].empty?
-    default['cloudstack']['relase_major'] = "4.3"
-else
-    default['cloudstack']['relase_major'] =  "#{node['cloudstack']['version'].split('.')[0]}.#{node['cloudstack']['version'].split('.')[1]}"
-end
 
 
 # /etc/security

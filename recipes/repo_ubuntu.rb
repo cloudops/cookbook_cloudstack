@@ -22,7 +22,7 @@ include_recipe "apt"
 # add Apache CloudStack .deb repo
 apt_repository "cloudstack" do
   uri node['cloudstack']['apt_repo']
-  components [ node['cloudstack']['relase_major'] ]
+  components [ node['cloudstack']['release_major'] ]
   distribution "precise"
   key "http://cloudstack.apt-get.eu/release.asc"
   action :add

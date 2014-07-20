@@ -27,6 +27,146 @@ Requirements
 - `mysql` - for MySQL database server and client
 - `sudo` - to configure sudoers for user "cloud"
 
+There is a dependency on Ruby gem [cloudstack_ruby_client](https://github.com/chipchilders/cloudstack_ruby_client) for chef which is handle in `recipe[cloudstack::default]`.
+
+Resources/Providers
+-------------------
+
+### cloudstack_setup_database
+
+Create MySQL database and connection configuration used by CloudStack management-server using `/usr/bin/cloudstack-setup-databases` utility.
+
+#### Examples
+
+``` ruby
+# Using attributes
+cloudstack_setup_database node["cloudstack"]["db"]["host"] do
+  root_user     node["cloudstack"]["db"]["rootusername"]
+  root_password node["cloudstack"]["db"]["rootpassword"]
+  user          node["cloudstack"]["db"]["username"]
+  password      node["cloudstack"]["db"]["password"]
+  action        :create
+end
+```
+
+```ruby
+# using mysql cookbook and CloudStack default passwords
+cloudstack_setup_database node["cloudstack"]["db"]["host"] do
+  action        :create
+end
+```
+
+### cloudstack_system_template
+
+Download initial SystemVM template prior to initialize a CloudStack Region. cloudstack_system_template require access to CloudStack database which must be initated before executing this ressource. If no URL is provided cloudstack_system_template will use the default URL from the database if available to download the template.
+
+#### Examples
+
+``` ruby
+# Using attributes
+cloudstack_system_template 'xenserver' do
+  nfs_path    node["cloudstack"]["secondary"]["path"]
+  nfs_server  node["cloudstack"]["secondary"]["host"]
+  db_user     node["cloudstack"]["db"]["username"]
+  db_password node["cloudstack"]["db"]["password"]
+  db_host     node["cloudstack"]["db"]["host"]
+end
+```
+
+``` ruby
+cloudstack_system_template 'kvm' do
+end
+```
+
+### cloudstack_setup_management
+
+Post package installation and Database Creation for CloudStack, cloudstack-management service must be configure using a script `/usr/bin/cloudstack-setup-management`.
+
+``` ruby
+cloudstack_setup_management node.name
+```
+
+### cloudstack_api_keys
+
+Generate api keys for account. Currently working only for admin account.
+
+Will update attributes:
+- `node["cloudstack"]["admin"]["api_key"]`
+- `node["cloudstack"]["admin"]["secret_key"]`
+
+#### examples
+
+``` ruby
+# Create API key if now exist in Cloudstack and update node attributes
+cloudstack_api_keys "admin" do
+  action :create
+end
+```
+
+``` ruby
+# Generate new API Keys
+cloudstack_api_keys "admin" do
+  action :reset
+end
+```
+
+### cloudstack_global_setting
+
+Update Global Settings values.
+
+#### examples
+
+``` ruby
+cloudstack_global_setting "expunge.delay" do
+  value "80"
+  notifies :restart, "service[cloudstack-management]", :delayed
+end
+```
+
+
+Recipes
+-------
+
+### cloudstack::management_server
+
+Prepare the node to be a CloudStack management server. It will not fully
+install CloudStack because of dependency such as MySQL server and system VM
+templates. Refer to [cloudstack_wrapper cookbook](https://github.com/cloudops/cookbook_cloudstack_wrapper)
+to install a fully working CloudStack management-server.
+
+### cloudstack::usage
+
+Install, enable and start cloudstack-usage. cloudstack-usage is usefull to collect resource usage from account. This recipe make sure cloudstack-usage run on a cloudstack-management server as it is required.
+
+### cloudstack::kvm_agent
+
+Install, enable and start KVM cloudstack-agent. KVM host managed by CloudStack require an agent. This recipe install cloudstack-agent required on a KVM server.
+
+Support Ubuntu and CentOS/RHEL KVM server.
+
+### cloudstack::vhd-util
+
+Download the tool vhd-util which is not include in CloudStack packages and required to manage XenServer hosts.
+
+### cloudstack::mysql_conf
+
+MySQL tunning based on official CloudStack documentation.
+
+### cloudstack::default
+
+Chef Required dependencies in order to interact with CloudStack.
+
+
+Attributes
+----------
+
+Attributes can be customized. The cookbook does not support encrypted data bag usage for now.
+
+- <tt>node['cloudstack']['yum_repo']</tt> - yum repo url to use, default: http://cloudstack.apt-get.eu/rhel/4.3/
+- <tt>node['cloudstack']['apt_repo']</tt> - apt repo url to use, default: http://cloudstack.apt-get.eu/ubuntu
+- <tt>node['cloudstack']['release_major']</tt> - Major CloudStack release ex: 4.3 or 4.2
+- <tt>node['cloudstack']['version']</tt> - Package version ex: 4.2.1-1.el6
+
 
 Contributing
 ------------

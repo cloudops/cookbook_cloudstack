@@ -23,13 +23,13 @@
 default['cloudstack']['version'] = ""
 # relase_major = release version, used for the repo URL
 if node['cloudstack']['version'].empty?
-    default['cloudstack']['relase_major'] = "4.3"
+    default['cloudstack']['release_major'] = "4.3"
 else
-    default['cloudstack']['relase_major'] =  "#{node['cloudstack']['version'].split('.')[0]}.#{node['cloudstack']['version'].split('.')[1]}"
+    default['cloudstack']['release_major'] =  "#{node['cloudstack']['version'].split('.')[0]}.#{node['cloudstack']['version'].split('.')[1]}"
 end
 
 # yum repo URL
-default['cloudstack']['yum_repo'] = "http://cloudstack.apt-get.eu/rhel/#{node['cloudstack']['relase_major']}/"
+default['cloudstack']['yum_repo'] = "http://cloudstack.apt-get.eu/rhel/#{node['cloudstack']['release_major']}/"
 # apt repo URL
 default['cloudstack']['apt_repo'] = "http://cloudstack.apt-get.eu/ubuntu"
 
