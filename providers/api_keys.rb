@@ -24,16 +24,22 @@ require 'net/http'
 require 'json'
 include Cloudstack
 
+# Support whyrun
+def whyrun_supported?
+  true
+end
 
 action :create do
-  load_current_resource
+  #load_current_resource
   
   if cloudstack_is_running?
     if @current_resource.username == "admin"
       admin_keys = retrieve_admin_keys(@current_resource.url, @current_resource.password)
       if admin_keys[:api_key].nil?
-        admin_keys = generate_admin_keys(@current_resource.url, @current_resource.password)
-        Chef::Log.info "admin api keys: Generate new"
+        converge_by("Creating api keys for admin") do
+          admin_keys = generate_admin_keys(@current_resource.url, @current_resource.password)
+          Chef::Log.info "admin api keys: Generate new"
+        end
       else
         Chef::Log.info "admin api keys: use existing"
       end
@@ -49,35 +55,22 @@ end
 
 action :reset do
   # force generate new API keys
-  load_current_resource
+  #load_current_resource
   
   if cloudstack_is_running?
     if @current_resource.username == "admin"
-      admin_keys = generate_admin_keys(@current_resource.url, @current_resource.password)
-      Chef::Log.info "admin api keys: Generate new"
-      node.normal["cloudstack"]["admin"]["api_key"] = admin_keys[:api_key]
-      node.normal["cloudstack"]["admin"]["secret_key"] = admin_keys[:secret_key]
-      node.save
+      converge_by("Reseting admin api keys") do
+        admin_keys = generate_admin_keys(@current_resource.url, @current_resource.password)
+        Chef::Log.info "admin api keys: Generate new"
+        node.normal["cloudstack"]["admin"]["api_key"] = admin_keys[:api_key]
+        node.normal["cloudstack"]["admin"]["secret_key"] = admin_keys[:secret_key]
+        node.save
+      end
     end
   else
     Chef::Log.error "CloudStack not running, cannot generate API keys."
   end
 end
-
-def load_current_resource
-  @current_resource = Chef::Resource::CloudstackApiKeys.new(@new_resource.name)
-  @current_resource.username(@new_resource.name)
-  @current_resource.password(@new_resource.password)
-  @current_resource.url(@new_resource.url)
-  @current_resource.admin_apikey(@new_resource.admin_apikey)
-  @current_resource.admin_apikey(@new_resource.admin_secretkey)
-  
-  if @current_resource.username == "admin" and  node["cloudstack"]["admin"]["api_key"] == retrieve_admin_keys(@current_resource.url, @current_resource.password)[:api_key]
-    @current_resource.exists = true
-  end
-
-end
-
 
 def generate_admin_keys(url, password)
 
@@ -140,4 +133,19 @@ def retrieve_admin_keys(url, password)
     :secret_key => JSON.parse(users.body)["listusersresponse"]["user"].first["secretkey"]
   }
   return keys
+end
+
+
+def load_current_resource
+  @current_resource = Chef::Resource::CloudstackApiKeys.new(@new_resource.name)
+  @current_resource.username(@new_resource.name)
+  @current_resource.password(@new_resource.password)
+  @current_resource.url(@new_resource.url)
+  @current_resource.admin_apikey(@new_resource.admin_apikey)
+  @current_resource.admin_apikey(@new_resource.admin_secretkey)
+  
+  if @current_resource.username == "admin" and  node["cloudstack"]["admin"]["api_key"] == retrieve_admin_keys(@current_resource.url, @current_resource.password)[:api_key]
+    @current_resource.exists = true
+  end
+
 end

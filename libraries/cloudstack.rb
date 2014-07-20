@@ -55,6 +55,7 @@ module Cloudstack
   end
 
   def test_connection?(api_key, secret_key)
+    # test connection to CloudStack API
     require 'cloudstack_ruby_client'
     client = CloudstackRubyClient::Client.new("http://localhost:8080/client/api/", api_key, secret_key, false)
     begin
