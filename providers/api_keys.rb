@@ -29,6 +29,7 @@ def whyrun_supported?
   true
 end
 
+
 action :create do
   #load_current_resource
   if cloudstack_is_running?
@@ -55,7 +56,6 @@ end
 action :reset do
   # force generate new API keys
   #load_current_resource
-  
   if cloudstack_is_running?
     if @current_resource.username == "admin"
       converge_by("Reseting admin api keys") do
@@ -70,6 +70,7 @@ action :reset do
     Chef::Log.error "CloudStack not running, cannot generate API keys."
   end
 end
+
 
 def generate_admin_keys(url, password)
   login_params = { :command => "login", :username => "admin", :password => password, :response => "json" }    
@@ -101,6 +102,7 @@ def generate_admin_keys(url, password)
   }
   return keys
 end
+
 
 def retrieve_admin_keys(url, password)
   login_params = { :command => "login", :username => "admin", :password => password, :response => "json" }    
