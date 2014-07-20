@@ -22,7 +22,6 @@
 require 'socket'
 require 'timeout'
 
-
 module Cloudstack
   
   def port_open(ip, port, seconds=1)
@@ -53,6 +52,21 @@ module Cloudstack
   def cloudstack_is_running?
     # Test if CloudStack Management server is running on localhost.
     port_open('localhost', 8080)
+  end
+
+  def test_connection?(api_key, secret_key)
+    require 'cloudstack_ruby_client'
+    client = CloudstackRubyClient::Client.new("http://localhost:8080/client/api/", api_key, secret_key, false)
+    begin
+      test = client.list_accounts
+    rescue LoadError => e
+      Chef::Log.error("unable to contact CloudStack API: #{e}")
+    end
+    if test["count"] >= 1
+      return true
+    else
+      return false
+    end
   end
 
 end

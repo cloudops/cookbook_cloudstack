@@ -17,20 +17,8 @@
 # limitations under the License.
 #
 
-include_recipe "cloudstack::management_server"
+chef_gem 'cloudstack_ruby_client' do
+  action :nothing
+end.run_action(:install)
+Gem.clear_paths
 
-cloudstack_setup_database 'localhost' do
-  root_user 'root'
-  root_password 'cloud'
-  user 'cloud'
-  password 'password'
-  action :create
-end
-
-cloudstack_system_template 'xenserver' do
-  nfs_path "/data/secondary"
-  nfs_server  "localhost"
-  db_user "cloud"
-  db_password "password"
-  db_host "localhost"
-end

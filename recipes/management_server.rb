@@ -20,6 +20,7 @@
 # Install CloudStack Management Server and perform required tunings.
 ####
 
+include_recipe 'cloudstack::default'
 include_recipe "cloudstack::repo"
 
 package "cloudstack-management" do
@@ -68,6 +69,8 @@ node.set['authorization']['sudo']['include_sudoers_d'] = true
 sudo 'cloud' do
   template 'sudoers_cloudstack.erb'
 end
+
+
 
 #service "cloudstack-management" do
 #  supports :restart => true, :status => true, :start => true, :stop => true
