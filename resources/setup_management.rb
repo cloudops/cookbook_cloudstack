@@ -1,5 +1,5 @@
 # Cookbook Name:: cloudstack
-# Resource:: generate_api_keys
+# Resource:: setup_management
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
 #
 # Copyright:: Copyright (c) 2014 CloudOps.com
@@ -17,14 +17,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+#
+# execute default cloudstack configuration script 
+###############################################################################
 
+actions :run
 
-actions :create
+default_action :run
 
-default_action :create
-
-attribute :username       , :name_attribute => true, :kind_of => String
-attribute :url            , :kind_of => String, :default => "http://localhost:8080/client/api"
-attribute :password       , :kind_of => String, :default => "password"
+attribute :host                   , :name_attribute => true, :kind_of => String
 
 attr_accessor :exists

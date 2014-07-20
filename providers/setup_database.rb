@@ -18,7 +18,7 @@
 #
 
 include Chef::Mixin::ShellOut
-include Chef::Recipe::Cloudstack
+include Cloudstack
 
 
 action :create do

@@ -19,8 +19,7 @@
 # Download system template for initial deployment of CloudStack
 
 include Chef::Mixin::ShellOut
-include Chef::Recipe::Cloudstack
-
+include Cloudstack
 
 action :create do
   load_current_resource
@@ -43,20 +42,25 @@ def load_current_resource
   @current_resource.db_password(@new_resource.db_password)
   @current_resource.db_host(@new_resource.db_host)
 
-  if @new_resource.url.nil?
-    if db_exist?(@current_resource.db_host, @current_resource.db_user, @current_resource.db_password)
-      @current_resource.url(`mysql -h #{@current_resource.db_host} --user=#{@current_resource.db_user} --password=#{@current_resource.db_password} --skip-column-names -U cloud -e 'select max(url) from cloud.vm_template where type = \"SYSTEM\" and hypervisor_type = \"#{@current_resource.hypervisor}\" and removed is null'`.chomp)
-      template_id = get_template_id
-      if ::File.exist?("#{@current_resource.nfs_path}/template/tmpl/1/#{template_id}/template.properties")
-        @current_resource.exists = true
+  # if CloudStack management-server is running, it mean a systemvm template as been downloaded.
+  if cloudstack_is_running?
+    @current_resource.exists = true
+  else
+    if @new_resource.url.nil?
+      if db_exist?(@current_resource.db_host, @current_resource.db_user, @current_resource.db_password)
+        @current_resource.url(`mysql -h #{@current_resource.db_host} --user=#{@current_resource.db_user} --password=#{@current_resource.db_password} --skip-column-names -U cloud -e 'select max(url) from cloud.vm_template where type = \"SYSTEM\" and hypervisor_type = \"#{@current_resource.hypervisor}\" and removed is null'`.chomp)
+        template_id = get_template_id
+        if ::File.exist?("#{@current_resource.nfs_path}/template/tmpl/1/#{template_id}/template.properties")
+          @current_resource.exists = true
+        end
+      else
+        Chef::Log.error "Database not configured. Cannot retrieve Template URL"
       end
     else
-      Chef::Log.error "Database not configured. Cannot retrieve Template URL"
+      @current_resource.url(@new_resource.url)
     end
-  else
-    @current_resource.url(@new_resource.url)
-  end
   
+  end
 
 end
 
