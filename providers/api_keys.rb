@@ -59,6 +59,8 @@ action :create do
       node.normal["cloudstack"]["admin"]["api_key"] = admin_keys[:api_key]
       node.normal["cloudstack"]["admin"]["secret_key"] = admin_keys[:secret_key]
       node.save
+      $admin_apikey = admin_keys[:api_key]
+      $admin_secretkey = admin_keys[:secret_key]
     end
   else
     Chef::Log.error "CloudStack not running, cannot generate API keys."
@@ -76,6 +78,8 @@ action :reset do
         node.normal["cloudstack"]["admin"]["api_key"] = admin_keys[:api_key]
         node.normal["cloudstack"]["admin"]["secret_key"] = admin_keys[:secret_key]
         node.save
+        $admin_apikey = admin_keys[:api_key]
+        $admin_secretkey = admin_keys[:secret_key]
       end
     end
   else
