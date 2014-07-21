@@ -32,7 +32,19 @@ end
 
 action :create do
   #load_current_resource
-  if cloudstack_is_running?
+  #wait_count = 0
+  #until cloudstack_api_is_running? or wait_count == 5 do
+  #  cloudstack_api_is_running?
+  #  sleep(5)
+  #  wait_count +=1
+  #  if wait_count == 1
+  #    Chef::Log.info "Waiting CloudStack to start"
+  #  end
+  #end
+#
+  #sleep(15)
+
+  if cloudstack_api_is_running?
     if @current_resource.username == "admin"
       admin_keys = retrieve_admin_keys(@current_resource.url, @current_resource.password)
       if admin_keys[:api_key].nil?
@@ -47,6 +59,8 @@ action :create do
       node.normal["cloudstack"]["admin"]["api_key"] = admin_keys[:api_key]
       node.normal["cloudstack"]["admin"]["secret_key"] = admin_keys[:secret_key]
       node.save
+      node["cloudstack"]["admin"]["api_key"] = admin_keys[:api_key]
+      node["cloudstack"]["admin"]["secret_key"] = admin_keys[:secret_key]
     end
   else
     Chef::Log.error "CloudStack not running, cannot generate API keys."
@@ -64,6 +78,8 @@ action :reset do
         node.normal["cloudstack"]["admin"]["api_key"] = admin_keys[:api_key]
         node.normal["cloudstack"]["admin"]["secret_key"] = admin_keys[:secret_key]
         node.save
+        node["cloudstack"]["admin"]["api_key"] = admin_keys[:api_key]
+        node["cloudstack"]["admin"]["secret_key"] = admin_keys[:secret_key]
       end
     end
   else

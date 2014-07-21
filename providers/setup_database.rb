@@ -22,7 +22,7 @@ include Cloudstack
 
 
 action :create do
-  load_current_resource
+  #load_current_resource
   #Chef::Log.info "creating cloudstack database"
   unless @current_resource.exists
     # 1. check if database exist, if so create connection config but do not init db.
@@ -30,9 +30,13 @@ action :create do
     @scriptname = "/usr/bin/cloudstack-setup-databases"
     if ::File.exist?(@scriptname)
       if db_exist?(@current_resource.ip, @current_resource.user, @current_resource.password)
-        init_config_database
+        converge_by("Using existing CloudStack database") do
+          init_config_database
+        end
       else
-        init_database
+        converge_by("Creating CloudStack database") do
+          init_database
+        end
       end
     else
       Chef::Log.error "#{@scriptname} not found"

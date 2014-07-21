@@ -21,6 +21,8 @@
 
 require 'socket'
 require 'timeout'
+require 'uri'
+require 'net/http'
 
 module Cloudstack
   
@@ -47,6 +49,23 @@ module Cloudstack
     else
       return false
     end 
+  end
+
+  def cloudstack_api_is_running?(host="localhost")
+    uri = URI("http://" + host + ":8080/client/api/")
+    cs_connect = Net::HTTP::Get.new(uri.to_s)
+    begin
+      response = Net::HTTP.start(uri.hostname, uri.port) {|http|
+        http.request(cs_connect)
+      }
+      if response.message == "Unauthorized"
+        return true
+      else
+        return false
+      end
+    rescue
+      return false
+    end
   end
 
   def cloudstack_is_running?

@@ -29,13 +29,16 @@ def whyrun_supported?
 end
 
 def load_current_value(name)
+  require 'cloudstack_ruby_client'
   # get CloudStack current value of the Global Setting
-  @client.list_configurations(:name => name)["configuration"].first["value"]
+  client = CloudstackRubyClient::Client.new("http://localhost:8080/client/api/", @current_resource.admin_apikey, @current_resource.admin_secretkey, false)
+  client.list_configurations(:name => name)["configuration"].first["value"]
 end
 
 def update_setting(name, value)
   require 'cloudstack_ruby_client'
-  @client.update_configuration({
+  client = CloudstackRubyClient::Client.new("http://localhost:8080/client/api/", @current_resource.admin_apikey, @current_resource.admin_secretkey, false)
+  client.update_configuration({
       :name => name,
       :value => value
   })
@@ -45,11 +48,13 @@ end
 # ACTIONS
 #########
 action :update do
-  #load_current_resource
-  unless @current_resource.exists
-    converge_by("Update Global Setting: #{@current_resource.name}") do
-      test_connection?(@current_resource.admin_apikey, @current_resource.admin_secretkey)
-      update_setting(@current_resource.name, @current_resource.value)
+  unless @current_resource.admin_apikey.nil?
+    Chef::Log.error "admin_apikey empty, cannot update Global Settings"
+    unless @current_resource.exists
+      converge_by("Update Global Setting: #{@current_resource.name} to #{@current_resource.value}") do
+        #test_connection?(@current_resource.admin_apikey, @current_resource.admin_secretkey)
+        update_setting(@current_resource.name, @current_resource.value)
+      end
     end
   end
 end
@@ -68,7 +73,7 @@ def load_current_resource
     if @current_resource.admin_apikey.nil?
       Chef::Log.error "admin_apikey empty, cannot update Global Settings"
     else
-      @client = CloudstackRubyClient::Client.new("http://localhost:8080/client/api/", @current_resource.admin_apikey, @current_resource.admin_secretkey, false)
+      client = CloudstackRubyClient::Client.new("http://localhost:8080/client/api/", @current_resource.admin_apikey, @current_resource.admin_secretkey, false)
       current_value = load_current_value(@current_resource.name)
       if current_value.nil?
         Chef::Log.error "Global Setting: #{@current_resource.name} not found"
