@@ -26,7 +26,7 @@ default_action :update
 
 attribute :name                 , :name_attribute => true, :kind_of => String
 attribute :value                , :kind_of => String
-attribute :admin_apikey         , :kind_of => String, :default => node["cloudstack"]["admin"]["api_key"]
-attribute :admin_secretkey      , :kind_of => String, :default => node["cloudstack"]["admin"]["secret_key"]
+attribute :admin_apikey         , :kind_of => String #, :default => node["cloudstack"]["admin"]["api_key"]
+attribute :admin_secretkey      , :kind_of => String #, :default => node["cloudstack"]["admin"]["secret_key"]
 
 attr_accessor :exists

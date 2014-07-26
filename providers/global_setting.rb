@@ -85,7 +85,7 @@ def load_current_resource
       else
         if @current_resource.value == current_value
           @current_resource.exists = true
-        else 
+        else
           @current_resource.exists = false
         end
       end

@@ -88,12 +88,13 @@ action :reset do
 end
 
 
-def generate_admin_keys(url, password)
+def generate_admin_keys(url='http://localhost:8080/client/api', password='password')
   login_params = { :command => "login", :username => "admin", :password => password, :response => "json" }    
   # create sessionkey and cookie of the api session initiated with username and password
   uri = URI(url)
   uri.query = URI.encode_www_form(login_params)
-  res = Net::HTTP.get_response(uri)
+  http = Net::HTTP.new(uri.hostname, uri.port)
+  res = http.get(uri.request_uri)
   get_keys_params = {
       :sessionkey => JSON.parse(res.body)['loginresponse']['sessionkey'], 
       :command => "registerUserKeys", 
@@ -104,50 +105,47 @@ def generate_admin_keys(url, password)
   # use sessionkey + cookie to generate admin API and SECRET keys.
   uri2 = URI(url)
   uri2.query = URI.encode_www_form(get_keys_params) 
+  sleep(2) # add some delay to have the session working 
+  query_for_keys = http.get(uri2.request_uri, { 'Cookie' => res.response['set-cookie'].split('; ')[0] })
 
-  get_key = Net::HTTP::Get.new(uri2.to_s)
-  get_key['Cookie'] = res.response['set-cookie'].split('; ')[0]
-
-  keys = Net::HTTP.start(uri2.hostname, uri2.port) {|http|
-    http.request(get_key)
-  }
-
-  keys = {
-    :api_key => JSON.parse(keys.body)["registeruserkeysresponse"]["userkeys"]["apikey"],
-    :secret_key => JSON.parse(keys.body)["registeruserkeysresponse"]["userkeys"]["secretkey"]
-  }
+  if users.code == "200"
+    keys = {
+      :api_key => JSON.parse(query_for_keys.body)["registeruserkeysresponse"]["userkeys"]["apikey"],
+      :secret_key => JSON.parse(query_for_keys.body)["registeruserkeysresponse"]["userkeys"]["secretkey"]
+    }
+  else
+    Chef::Log.info "Error creating keys errorcode: #{users.code}"
+  end
   return keys
 end
 
 
-def retrieve_admin_keys(url, password)
+def retrieve_admin_keys(url='http://localhost:8080/client/api', password='password')
   login_params = { :command => "login", :username => "admin", :password => password, :response => "json" }    
   # create sessionkey and cookie of the api session initiated with username and password
   uri = URI(url)
   uri.query = URI.encode_www_form(login_params)
-  res = Net::HTTP.get_response(uri)
+  http = Net::HTTP.new(uri.hostname, uri.port)
+  res = http.get(uri.request_uri)
   get_keys_params = {
       :sessionkey => JSON.parse(res.body)['loginresponse']['sessionkey'], 
       :command => "listUsers", 
       :response => "json", 
       :id => "2"
   }
-
   # use sessionkey + cookie to generate admin API and SECRET keys.
   uri2 = URI(url)
   uri2.query = URI.encode_www_form(get_keys_params) 
-
-  get_key = Net::HTTP::Get.new(uri2.to_s)
-  get_key['Cookie'] = res.response['set-cookie'].split('; ')[0]
-
-  users = Net::HTTP.start(uri2.hostname, uri2.port) {|http|
-    http.request(get_key)
-  }
-
-  keys = {
-    :api_key => JSON.parse(users.body)["listusersresponse"]["user"].first["apikey"],
-    :secret_key => JSON.parse(users.body)["listusersresponse"]["user"].first["secretkey"]
-  }
+  sleep(2) # add some delay to have the session working 
+  users = http.get(uri2.request_uri, { 'Cookie' => res.response['set-cookie'].split('; ')[0] })
+  if users.code == "200"
+    keys = {
+      :api_key => JSON.parse(users.body)["listusersresponse"]["user"].first["apikey"],
+      :secret_key => JSON.parse(users.body)["listusersresponse"]["user"].first["secretkey"]
+    }
+  else
+    Chef::Log.info "Error creating keys errorcode: #{users.code}"
+  end
   return keys
 end
 
@@ -160,8 +158,8 @@ def load_current_resource
   @current_resource.admin_apikey(@new_resource.admin_apikey)
   @current_resource.admin_apikey(@new_resource.admin_secretkey)
   
-  if @current_resource.username == "admin" and  node["cloudstack"]["admin"]["api_key"] == retrieve_admin_keys(@current_resource.url, @current_resource.password)[:api_key]
-    @current_resource.exists = true
-  end
+  #if @current_resource.username == "admin" and  node["cloudstack"]["admin"]["api_key"] == retrieve_admin_keys(@current_resource.url, @current_resource.password)[:api_key]
+  #  @current_resource.exists = true
+  #end
 
 end

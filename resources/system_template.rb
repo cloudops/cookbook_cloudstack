@@ -28,9 +28,9 @@ attribute :nfs_server    , :kind_of => String, :default => "localhost"
 
 # If URL net specify, can retreive template URL from database.
 attribute :url           , :kind_of => String
-attribute :db_user       , :kind_of => String, :default => node["cloudstack"]["db"]["user"]
-attribute :db_password   , :kind_of => String, :default => node["cloudstack"]["db"]["password"]
-attribute :db_host       , :kind_of => String, :default => node["cloudstack"]["db"]["host"]
+attribute :db_user       , :kind_of => String, :default => 'cloud' #node["cloudstack"]["db"]["user"]
+attribute :db_password   , :kind_of => String, :default => 'password' #node["cloudstack"]["db"]["password"]
+attribute :db_host       , :kind_of => String, :default => 'localhost' #node["cloudstack"]["db"]["host"]
 
 
 attr_accessor :exists
