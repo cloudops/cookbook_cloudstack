@@ -23,7 +23,7 @@ default['cloudstack']['secondary']['mgt_path'] = node['cloudstack']['secondary']
 default['cloudstack']['cloud-install-sys-tmplt'] = "/usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt"
 
 case node['cloudstack']['version']
-when "4.3"
+when "4.3" || "4.4"
     default['cloudstack']['hypervisor_tpl'] = {
         "xenserver" => "http://download.cloud.com/templates/4.3/systemvm64template-2014-01-14-master-xen.vhd.bz2",
         "vmware" => "http://download.cloud.com/templates/4.3/systemvm64template-2014-01-14-master-vmware.ova",
