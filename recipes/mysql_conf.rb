@@ -26,5 +26,5 @@ template '/etc/mysql/conf.d/cloudstack.cnf' do
     :innodb_lock_wait_timeout => node["cloudstack"]["mysql"]["innodb_lock_wait_timeout"],
     :max_connections => node["cloudstack"]["mysql"]["max_connections"]
   })
-  notifies :restart, 'mysql_service[default]'
+  notifies :restart, 'mysql_service[default]', :immediately
 end

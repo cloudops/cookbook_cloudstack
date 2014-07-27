@@ -86,14 +86,14 @@ def secondary_storage
   end
 
   # Mount NFS share if required
-  unless @current_resource.nfs_server == node.name or @current_resource.nfs_server == node["ipaddress"] or @current_resource.nfs_server == "localhost"
-    mount @current_resource.nfs_path do
-      device "#{@current_resource.nfs_server}:#{@current_resource.nfs_path}"
-      fstype "nfs"
-      options "rw"
-      action [:mount]
-    end
-  end
+#  unless @current_resource.nfs_server == node.name or @current_resource.nfs_server == node["ipaddress"] or @current_resource.nfs_server == "localhost"
+#    mount @current_resource.nfs_path do
+#      device "#{@current_resource.nfs_server}:#{@current_resource.nfs_path}"
+#      fstype "nfs"
+#      options "rw"
+#      action [:mount]
+#    end
+#  end
 end
 
 def download_systemvm_template
