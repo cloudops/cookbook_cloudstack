@@ -17,4 +17,13 @@ describe 'cloudstack::default' do
   it 'does something' do
     expect(chef_run).to do_something('...')
   end
+
+end
+
+describe 'cloudstack::cloudstack_management' do
+  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+
+  it 'installs cloudstack-management' do
+    expect(chef_run).to install_package('cloudstack-management')
+  end
 end

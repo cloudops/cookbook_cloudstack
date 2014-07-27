@@ -41,7 +41,7 @@ template node['cloudstack']['nproc_limit_file'] do
   group 'root'
   mode 0755
   variables :user          => node['cloudstack']['username'],
-            :hard      => node['cloudstack']['nproc_limit_hard'],
+            :hard          => node['cloudstack']['nproc_limit_hard'],
             :soft          => node['cloudstack']['nproc_limit_soft'],
             :recipe_file   => (__FILE__).to_s.split("cookbooks/").last,
             :template_file => source.to_s
