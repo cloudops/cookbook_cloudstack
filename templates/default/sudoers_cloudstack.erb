@@ -18,5 +18,6 @@
 # The CloudStack management server needs sudo permissions
 # without a password.
 #
+Defaults:cloud !requiretty
 
-cloud ALL =NOPASSWD : /bin/chmod, /bin/cp, /bin/mkdir, /bin/mount, /bin/umount
+cloud ALL =NOPASSWD : /bin/chmod, /bin/cp, /bin/mkdir, /bin/mount, /bin/umount, /usr/bin/keytool
