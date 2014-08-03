@@ -31,16 +31,15 @@ end
 
 
 action :create do
-  #load_current_resource
-  #wait_count = 0
-  #until cloudstack_api_is_running? or wait_count == 5 do
-  #  cloudstack_api_is_running?
-  #  sleep(5)
-  #  wait_count +=1
-  #  if wait_count == 1
-  #    Chef::Log.info "Waiting CloudStack to start"
-  #  end
-  #end
+  wait_count = 0
+  until cloudstack_api_is_running? or wait_count == 5 do
+    cloudstack_api_is_running?
+    sleep(5)
+    wait_count +=1
+    if wait_count == 1
+      Chef::Log.info "Waiting CloudStack to start"
+    end
+  end
 #
   #sleep(15)
 
@@ -61,6 +60,7 @@ action :create do
       node.save
       $admin_apikey = admin_keys[:api_key]
       $admin_secretkey = admin_keys[:secret_key]
+      Chef::Log.info "$admin_apikey = #{$admin_apikey}"
     end
   else
     Chef::Log.error "CloudStack not running, cannot generate API keys."
@@ -85,6 +85,8 @@ action :reset do
   else
     Chef::Log.error "CloudStack not running, cannot generate API keys."
   end
+
+  puts $admin_apikey
 end
 
 

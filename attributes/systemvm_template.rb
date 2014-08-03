@@ -16,20 +16,31 @@
 # limitations under the License.
 #
 
-default['cloudstack']['secondary']['host'] = node["ipaddress"]
-default['cloudstack']['secondary']['path'] = "/data/secondary"
-default['cloudstack']['secondary']['mgt_path'] = node['cloudstack']['secondary']['path']
 
+# System VM templates
 default['cloudstack']['cloud-install-sys-tmplt'] = "/usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt"
 
-case node['cloudstack']['version']
-when "4.3" || "4.4"
+if node['cloudstack']['version'].empty?
+    validate_version =  node['cloudstack']['release_major']
+else 
+    validate_version =  node['cloudstack']['version']
+end
+case validate_version
+when "4.4"
     default['cloudstack']['hypervisor_tpl'] = {
-        "xenserver" => "http://download.cloud.com/templates/4.3/systemvm64template-2014-01-14-master-xen.vhd.bz2",
-        "vmware" => "http://download.cloud.com/templates/4.3/systemvm64template-2014-01-14-master-vmware.ova",
-        "kvm" => "http://download.cloud.com/templates/4.3/systemvm64template-2014-01-14-master-kvm.qcow2.bz2",
-        "lxc" => "http://download.cloud.com/templates/4.3/systemvm64template-2014-01-14-master-kvm.qcow2.bz2",
-        "hyperv" => "http://download.cloud.com/templates/4.3/systemvm64template-2013-12-23-hyperv.vhd.bz2"
+        "xenserver" => "http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.0-6-xen.vhd.bz2",
+        "vmware" => "http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.0-6-vmware.ova",
+        "kvm" => "http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.0-6-kvm.qcow2.bz2",
+        "lxc" => "http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.0-6-kvm.qcow2.bz2",
+        "hyperv" => "http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.0-6-hyperv.vhd"
+    }
+when "4.3"
+    default['cloudstack']['hypervisor_tpl'] = {
+        "xenserver" => "http://download.cloud.com/templates/4.3/systemvm64template-2014-06-23-master-xen.vhd.bz2",
+        "vmware" => "http://download.cloud.com/templates/4.3/systemvm64template-2014-06-23-master-vmware.ova",
+        "kvm" => "http://download.cloud.com/templates/4.3/systemvm64template-2014-06-23-master-kvm.qcow2.bz2",
+        "lxc" => "http://download.cloud.com/templates/4.3/systemvm64template-2014-06-23-master-kvm.qcow2.bz2",
+        "hyperv" => "http://download.cloud.com/templates/4.3/systemvm64template-2014-06-23-master-hyperv.vhd.bz2"
     }
 when "4.2.0" || "4.2.1"
     default['cloudstack']['hypervisor_tpl'] = {

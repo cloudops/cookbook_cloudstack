@@ -26,8 +26,11 @@ action :create do
 
   #Chef::Log.info "creating cloudstack database"
   unless @current_resource.exists
-    secondary_storage
-    download_systemvm_template
+    converge_by("Downloading system template from: #{@current_resource.url}") do
+      #test_connection?(@current_resource.admin_apikey, @current_resource.admin_secretkey)
+      secondary_storage
+      download_systemvm_template
+    end
   end
 end
 
@@ -35,6 +38,7 @@ end
 def load_current_resource
   @current_resource = Chef::Resource::CloudstackSystemTemplate.new(@new_resource.name)
   @current_resource.name(@new_resource.name)
+  @current_resource.url(@new_resource.url)  
   @current_resource.hypervisor(@new_resource.hypervisor)
   @current_resource.nfs_path(@new_resource.nfs_path)
   @current_resource.nfs_server(@new_resource.nfs_server)
@@ -46,20 +50,21 @@ def load_current_resource
   if cloudstack_is_running?
     @current_resource.exists = true
   else
-    if @new_resource.url.nil?
-      if db_exist?(@current_resource.db_host, @current_resource.db_user, @current_resource.db_password)
+    if db_exist?(@current_resource.db_host, @current_resource.db_user, @current_resource.db_password)
+      if @current_resource.url.nil?
         @current_resource.url(`mysql -h #{@current_resource.db_host} --user=#{@current_resource.db_user} --password=#{@current_resource.db_password} --skip-column-names -U cloud -e 'select max(url) from cloud.vm_template where type = \"SYSTEM\" and hypervisor_type = \"#{@current_resource.hypervisor}\" and removed is null'`.chomp)
-        template_id = get_template_id
-        if ::File.exist?("#{@current_resource.nfs_path}/template/tmpl/1/#{template_id}/template.properties")
-          @current_resource.exists = true
-        end
+      end
+      template_id = get_template_id
+      Chef::Log.debug "looking for template in #{@current_resource.nfs_path}/template/tmpl/1/#{template_id}"
+      if ::File.exist?("#{@current_resource.nfs_path}/template/tmpl/1/#{template_id}/template.properties")
+        Chef::Log.debug "template exists in #{@current_resource.nfs_path}/template/tmpl/1/#{template_id}"
+        @current_resource.exists = true
       else
-        Chef::Log.error "Database not configured. Cannot retrieve Template URL"
+        @current_resource.exists = false
       end
     else
-      @current_resource.url(@new_resource.url)
+      Chef::Log.error "Database not configured. Cannot retrieve Template URL"
     end
-  
   end
 
 end
@@ -78,26 +83,19 @@ end
 
 # Create or mount secondary storage path
 def secondary_storage
-  directory @current_resource.nfs_path do
-    owner "root"
-    group "root"
-    action :create
-    recursive true
+  unless ::File.exist?(@current_resource.nfs_path)
+    directory @current_resource.nfs_path do
+      owner "root"
+      group "root"
+      action :create
+      recursive true
+    end
   end
-
-  # Mount NFS share if required
-#  unless @current_resource.nfs_server == node.name or @current_resource.nfs_server == node["ipaddress"] or @current_resource.nfs_server == "localhost"
-#    mount @current_resource.nfs_path do
-#      device "#{@current_resource.nfs_server}:#{@current_resource.nfs_path}"
-#      fstype "nfs"
-#      options "rw"
-#      action [:mount]
-#    end
-#  end
 end
 
 def download_systemvm_template
     # Create database configuration for cloudstack management server that will use and existing database.
+    #puts "Downloading system template from: #{@current_resource.url}"
     Chef::Log.info "Downloading system template for #{@current_resource.hypervisor}, this will take some time..."
     download_cmd = "/usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt  -m #{@current_resource.nfs_path} -u #{@current_resource.url} -h #{@current_resource.hypervisor} -F"
     download_template = Mixlib::ShellOut.new(download_cmd)

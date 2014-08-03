@@ -49,7 +49,6 @@ end
 #########
 action :update do
   unless @current_resource.admin_apikey.nil?
-    Chef::Log.error "admin_apikey empty, cannot update Global Settings"
     unless @current_resource.exists
       converge_by("Update Global Setting: #{@current_resource.name} to #{@current_resource.value}") do
         #test_connection?(@current_resource.admin_apikey, @current_resource.admin_secretkey)

@@ -34,3 +34,9 @@ default['cloudstack']['yum_repo'] = "http://cloudstack.apt-get.eu/rhel/#{node['c
 default['cloudstack']['apt_repo'] = "http://cloudstack.apt-get.eu/ubuntu"
 
 
+# Secondary Storage
+default['cloudstack']['secondary']['host'] = node["ipaddress"]
+default['cloudstack']['secondary']['path'] = "/data/secondary"
+default['cloudstack']['secondary']['mgt_path'] = node['cloudstack']['secondary']['path']
+
+
