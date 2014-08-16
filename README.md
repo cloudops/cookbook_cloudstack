@@ -4,10 +4,6 @@ cloudstack Cookbook
 Install and configure [Apache Cloudstack](http://cloudstack.apache.org) using [Chef](http://www.getchef.com/). A wrapper cookbook is prefered in order to Install Apache CloudStack properly, see [cloudstack_wrapper cookbook](https://github.com/cloudops/cookbook_cloudstack_wrapper) as example.
 
 
-> Work in progress.
->
-> This is a complete rework of the co-cloudstack cookbook to use LWRP.
-
 Tested on CentOS 6.5 and Ubuntu 14.04
 
 
@@ -127,6 +123,7 @@ end
 Recipes
 -------
 
+
 ### cloudstack::management_server
 
 Prepare the node to be a CloudStack management server. It will not fully
@@ -134,9 +131,11 @@ install CloudStack because of dependency such as MySQL server and system VM
 templates. Refer to [cloudstack_wrapper cookbook](https://github.com/cloudops/cookbook_cloudstack_wrapper)
 to install a fully working CloudStack management-server.
 
+
 ### cloudstack::usage
 
 Install, enable and start cloudstack-usage. cloudstack-usage is usefull to collect resource usage from account. This recipe make sure cloudstack-usage run on a cloudstack-management server as it is required.
+
 
 ### cloudstack::kvm_agent
 
@@ -144,13 +143,21 @@ Install, enable and start KVM cloudstack-agent. KVM host managed by CloudStack r
 
 Support Ubuntu and CentOS/RHEL KVM server.
 
+
 ### cloudstack::vhd-util
 
 Download the tool vhd-util which is not include in CloudStack packages and required to manage XenServer hosts.
 
+
 ### cloudstack::mysql_conf
 
 MySQL tunning based on official CloudStack documentation.
+
+
+### cloudstacl::eventbus
+
+Configure CloudStack to send Events into RabbitMQ message bus. Work for CloudStack 4.3 and latest. RabbitMQ must be installed and configured somewhere, default values are for localhost.
+
 
 ### cloudstack::default
 

@@ -3,6 +3,10 @@ cloudstack CHANGELOG
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
+3.0.2
+-----
+- pdion891 - Add eventlog to rabbitmq config template
+
 3.0.0
 -----
 - pdion891 - Complete rewrite of co-cloudstack as cloudstack using Chef LWRP
