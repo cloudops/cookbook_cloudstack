@@ -1,7 +1,7 @@
+#
 # Cookbook Name:: cloudstack
 # Resource:: init_db
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
-#
 # Copyright:: Copyright (c) 2014 CloudOps.com
 #
 # Licensed under the Apache License, Version 2.0 (the "License");

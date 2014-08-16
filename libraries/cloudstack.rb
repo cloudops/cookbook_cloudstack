@@ -1,3 +1,6 @@
+#
+# Cookbook Name:: cloudstack
+# Library:: cloudstack
 # Author:: Pierre-Luc Dion <pdion@cloudops.com>
 # Copyright:: Copyright (c) 2014 CloudOps.com
 #

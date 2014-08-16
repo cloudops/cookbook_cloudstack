@@ -1,6 +1,6 @@
 # Cookbook Name:: cloudstack
 # Recipe:: kvm_agent
-#
+# Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
 # Copyright 2013, Roeland Kuipers
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
