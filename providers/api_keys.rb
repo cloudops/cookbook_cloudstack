@@ -57,7 +57,7 @@ action :create do
       #puts admin_keys
       node.normal["cloudstack"]["admin"]["api_key"] = admin_keys[:api_key]
       node.normal["cloudstack"]["admin"]["secret_key"] = admin_keys[:secret_key]
-      node.save
+      node.save unless Chef::Config[:solo]
       $admin_apikey = admin_keys[:api_key]
       $admin_secretkey = admin_keys[:secret_key]
       Chef::Log.info "$admin_apikey = #{$admin_apikey}"
@@ -77,7 +77,7 @@ action :reset do
         Chef::Log.info "admin api keys: Generate new"
         node.normal["cloudstack"]["admin"]["api_key"] = admin_keys[:api_key]
         node.normal["cloudstack"]["admin"]["secret_key"] = admin_keys[:secret_key]
-        node.save
+        node.save unless Chef::Config[:solo]
         $admin_apikey = admin_keys[:api_key]
         $admin_secretkey = admin_keys[:secret_key]
       end
