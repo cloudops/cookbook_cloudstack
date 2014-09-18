@@ -46,8 +46,25 @@ action :create do
 
   if cloudstack_api_is_running? 
     # bypass the section if CloudStack is not running.
-    if keys_valid?  
-      # test keys on cloudstack, if they work, skip the section.
+    if ! @current_resource.admin_apikey.nil? or ! @current_resource.admin_secretkey.nil?
+      # if keys attributes are empty search in Chef environment for other node having API-KEYS.
+      other_nodes = search(:node, "chef_environment:#{node.chef_environment} AND cloudstack_admin_api_key:* NOT name:#{node.name}")
+      if ! other_nodes.empty?
+        @current_resource.admin_apikey(other_nodes.first["cloudstack"]["admin"]["api_key"])
+        @current_resource.admin_secretkey(other_nodes.first["cloudstack"]["admin"]["secret_key"])
+      end
+
+      if keys_valid?  
+        # API-KEYS from other nodes are valids, so updating current node attributes.
+        #@current_resource.exists = true
+        Chef::Log.info "api keys: found valid keys from another node in the environment."
+        Chef::Log.info "api keys: updating node attributes"
+        node.normal["cloudstack"]["admin"]["api_key"] = @current_resource.admin_apikey
+        node.normal["cloudstack"]["admin"]["secret_key"] = @current_resource.admin_secretkey
+        node.save unless Chef::Config[:solo]
+      end
+    elsif keys_valid?  
+      # test API-KEYS on cloudstack, if they work, skip the section.
       @current_resource.exists = true
       Chef::Log.info "api keys: are valid, nothing to do."
     else
@@ -129,23 +146,29 @@ def generate_admin_keys(url='http://localhost:8080/client/api', password='passwo
   return keys
 end
 
+
 def keys_valid?
   # Test if current defined keys from Chef are valid
   #
   unless @current_resource.admin_apikey.nil? or @current_resource.admin_secretkey.nil?
     # return false if one key is empty
     require 'cloudstack_ruby_client'
-    client = CloudstackRubyClient::Client.new(@current_resource.url, @current_resource.admin_apikey, @current_resource.admin_secretkey, @current_resource.ssl)
-    list_apis = client.list_apis
+    begin
+      client = CloudstackRubyClient::Client.new(@current_resource.url, @current_resource.admin_apikey, @current_resource.admin_secretkey, @current_resource.ssl)
+      list_apis = client.list_apis
+    rescue
+      return false
+    end
     if list_apis.nil?
       return false
     else
       return true
     end
-  else 
+  else
     return false
   end
 end
+
 
 def retrieve_admin_keys(url='http://localhost:8080/client/api', password='password')
   login_params = { :command => "login", :username => "admin", :password => password, :response => "json" }    
