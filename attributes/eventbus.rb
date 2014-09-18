@@ -18,7 +18,7 @@
 #
 
 default['cloudstack']['event']['RabbitMQEventBus']['host'] = 'localhost'
-default['cloudstack']['event']['RabbitMQEventBus']['port'] = '55672'
+default['cloudstack']['event']['RabbitMQEventBus']['port'] = '5672'
 default['cloudstack']['event']['RabbitMQEventBus']['username'] = 'guest'
 default['cloudstack']['event']['RabbitMQEventBus']['password'] = 'guest'
 default['cloudstack']['event']['RabbitMQEventBus']['exchange'] = 'cloudstack-events'

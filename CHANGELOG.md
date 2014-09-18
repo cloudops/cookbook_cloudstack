@@ -3,6 +3,10 @@ cloudstack CHANGELOG
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
+3.0.3
+-----
+- pdion891 - api_key: add existing keys validation to fix admin password change.
+
 3.0.2
 -----
 - pdion891 - Add eventlog to rabbitmq config template

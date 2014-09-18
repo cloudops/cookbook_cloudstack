@@ -28,5 +28,6 @@ attribute :url            , :kind_of => String, :default => "http://localhost:80
 attribute :password       , :kind_of => String, :default => "password"
 attribute :admin_apikey   , :kind_of => String
 attribute :admin_secretkey, :kind_of => String
+attribute :ssl 			  , :equal_to => [true, false, 'true', 'false'], :default => false
 
 attr_accessor :exists

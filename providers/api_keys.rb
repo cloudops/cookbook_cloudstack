@@ -29,6 +29,9 @@ def whyrun_supported?
   true
 end
 
+#########
+# ACTIONS
+#########
 
 action :create do
   wait_count = 0
@@ -40,27 +43,32 @@ action :create do
       Chef::Log.info "Waiting CloudStack to start"
     end
   end
-#
-  #sleep(15)
 
-  if cloudstack_api_is_running?
-    if @current_resource.username == "admin"
-      admin_keys = retrieve_admin_keys(@current_resource.url, @current_resource.password)
-      if admin_keys[:api_key].nil?
-        converge_by("Creating api keys for admin") do
-          admin_keys = generate_admin_keys(@current_resource.url, @current_resource.password)
-          Chef::Log.info "admin api keys: Generate new"
+  if cloudstack_api_is_running? 
+    # bypass the section if CloudStack is not running.
+    if keys_valid?  
+      # test keys on cloudstack, if they work, skip the section.
+      @current_resource.exists = true
+      Chef::Log.info "api keys: are valid, nothing to do."
+    else
+      if @current_resource.username == "admin"
+        admin_keys = retrieve_admin_keys(@current_resource.url, @current_resource.password)
+        if admin_keys[:api_key].nil?
+          converge_by("Creating api keys for admin") do
+            admin_keys = generate_admin_keys(@current_resource.url, @current_resource.password)
+            Chef::Log.info "admin api keys: Generate new"
+          end
+        else
+          Chef::Log.info "admin api keys: use existing"
         end
-      else
-        Chef::Log.info "admin api keys: use existing"
+        #puts admin_keys
+        node.normal["cloudstack"]["admin"]["api_key"] = admin_keys[:api_key]
+        node.normal["cloudstack"]["admin"]["secret_key"] = admin_keys[:secret_key]
+        node.save unless Chef::Config[:solo]
+        $admin_apikey = admin_keys[:api_key]
+        $admin_secretkey = admin_keys[:secret_key]
+        Chef::Log.info "$admin_apikey = #{$admin_apikey}"
       end
-      #puts admin_keys
-      node.normal["cloudstack"]["admin"]["api_key"] = admin_keys[:api_key]
-      node.normal["cloudstack"]["admin"]["secret_key"] = admin_keys[:secret_key]
-      node.save unless Chef::Config[:solo]
-      $admin_apikey = admin_keys[:api_key]
-      $admin_secretkey = admin_keys[:secret_key]
-      Chef::Log.info "$admin_apikey = #{$admin_apikey}"
     end
   else
     Chef::Log.error "CloudStack not running, cannot generate API keys."
@@ -121,6 +129,23 @@ def generate_admin_keys(url='http://localhost:8080/client/api', password='passwo
   return keys
 end
 
+def keys_valid?
+  # Test if current defined keys from Chef are valid
+  #
+  unless @current_resource.admin_apikey.nil? or @current_resource.admin_secretkey.nil?
+    # return false if one key is empty
+    require 'cloudstack_ruby_client'
+    client = CloudstackRubyClient::Client.new(@current_resource.url, @current_resource.admin_apikey, @current_resource.admin_secretkey, @current_resource.ssl)
+    list_apis = client.list_apis
+    if list_apis.nil?
+      return false
+    else
+      return true
+    end
+  else 
+    return false
+  end
+end
 
 def retrieve_admin_keys(url='http://localhost:8080/client/api', password='password')
   login_params = { :command => "login", :username => "admin", :password => password, :response => "json" }    
@@ -158,8 +183,12 @@ def load_current_resource
   @current_resource.password(@new_resource.password)
   @current_resource.url(@new_resource.url)
   @current_resource.admin_apikey(@new_resource.admin_apikey)
-  @current_resource.admin_apikey(@new_resource.admin_secretkey)
+  @current_resource.admin_secretkey(@new_resource.admin_secretkey)
+  @current_resource.ssl(@new_resource.ssl)
   
+  #if keys_valid?
+  #  @current_resource.exists = true
+  #end
   #if @current_resource.username == "admin" and  node["cloudstack"]["admin"]["api_key"] == retrieve_admin_keys(@current_resource.url, @current_resource.password)[:api_key]
   #  @current_resource.exists = true
   #end
