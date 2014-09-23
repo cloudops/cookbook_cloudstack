@@ -2,6 +2,9 @@ cloudstack CHANGELOG
 ====================
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
+3.0.4
+-----
+- pdion891 - api_key: major rewrite part1.
 
 3.0.3
 -----
