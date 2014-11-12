@@ -23,11 +23,11 @@ default['cloudstack']['cloud-install-sys-tmplt'] = "/usr/share/cloudstack-common
 case node['cloudstack']['release_major']
 when "4.4"
     default['cloudstack']['hypervisor_tpl'] = {
-        "xenserver" => "http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.0-6-xen.vhd.bz2",
-        "vmware" => "http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.0-6-vmware.ova",
-        "kvm" => "http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.0-6-kvm.qcow2.bz2",
-        "lxc" => "http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.0-6-kvm.qcow2.bz2",
-        "hyperv" => "http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.0-6-hyperv.vhd"
+        "xenserver" => "http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.1-7-xen.vhd.bz2",
+        "vmware" => "http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.1-7-vmware.ova",
+        "kvm" => "http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.1-7-kvm.qcow2.bz2",
+        "lxc" => "http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.1-7-kvm.qcow2.bz2",
+        "hyperv" => "http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.1-7-hyperv.vhd"
     }
 when "4.3"
     default['cloudstack']['hypervisor_tpl'] = {

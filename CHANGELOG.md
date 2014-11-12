@@ -3,6 +3,10 @@ cloudstack CHANGELOG
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
+3.0.6
+-----
+- pdion891 - update 4.4.1 systemplate urls
+
 3.0.5
 -----
 - pdion891 - fix systemvmtemplate url selection
