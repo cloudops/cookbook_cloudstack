@@ -3,6 +3,10 @@ cloudstack CHANGELOG
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
+3.0.7
+-----
+- pdion891 - rename ``hypervisor_tpl`` by ``systemvm``
+
 3.0.6
 -----
 - pdion891 - update 4.4.1 systemplate urls
