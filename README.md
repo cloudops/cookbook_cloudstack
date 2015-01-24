@@ -61,6 +61,7 @@ Download initial SystemVM template prior to initialize a CloudStack Region. clou
 ``` ruby
 # Using attributes
 cloudstack_system_template 'xenserver' do
+  url         node['cloudstack']['systemvm']['xenserver']
   nfs_path    node["cloudstack"]["secondary"]["path"]
   nfs_server  node["cloudstack"]["secondary"]["host"]
   db_user     node["cloudstack"]["db"]["username"]
@@ -68,8 +69,18 @@ cloudstack_system_template 'xenserver' do
   db_host     node["cloudstack"]["db"]["host"]
 end
 ```
+Which is equivalent to:
+
+``` bash
+/usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt \
+-m /mnt/secondary \
+-u http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.1-7-xen.vhd.bz2 \
+-h xenserver \
+-F
+```
 
 ``` ruby
+# Using URL from CloudStack database
 cloudstack_system_template 'kvm' do
 end
 ```
@@ -154,7 +165,7 @@ Download the tool vhd-util which is not include in CloudStack packages and requi
 MySQL tunning based on official CloudStack documentation.
 
 
-### cloudstacl::eventbus
+### cloudstack::eventbus
 
 Configure CloudStack to send Events into RabbitMQ message bus. Work for CloudStack 4.3 and latest. RabbitMQ must be installed and configured somewhere, default values are for localhost.
 
@@ -200,7 +211,7 @@ Some snippets have been taken from: [schubergphilis/cloudstack-cookbook](https:/
 
 
 ```text
-Copyright:: Copyright (c) 2014 CloudOps.com
+Copyright:: Copyright (c) 2015 Author's
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

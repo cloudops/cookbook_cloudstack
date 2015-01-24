@@ -2,7 +2,7 @@
 # Cookbook Name:: cloudstack
 # Resource:: system_template
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
-# Copyright:: Copyright (c) 2014 CloudOps.com
+# Copyright 2015, CloudOps, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.require "system_vm_template"
@@ -23,7 +23,7 @@ actions :create
 default_action :create
 
 attribute :hypervisor    , :name_attribute => true, :kind_of => String
-attribute :nfs_path      , :kind_of => String, :default => "/export/secondary"
+attribute :nfs_path      , :kind_of => String, :default => "/mnt/secondary"
 attribute :nfs_server    , :kind_of => String, :default => "localhost"
 
 # If URL net specify, can retreive template URL from database.
