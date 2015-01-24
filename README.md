@@ -1,7 +1,7 @@
 cloudstack Cookbook
 ===================
 
-Install and configure [Apache Cloudstack](http://cloudstack.apache.org) using [Chef](http://www.getchef.com/). A wrapper cookbook is prefered in order to Install Apache CloudStack properly, see [cloudstack_wrapper cookbook](https://github.com/cloudops/cookbook_cloudstack_wrapper) as example.
+Install and configure [Apache Cloudstack](http://cloudstack.apache.org) using [Chef](http://www.getchef.com/). A wrapper cookbook is prefered in order to Install Apache CloudStack properly, refer to [cloudstack_wrapper cookbook](https://github.com/cloudops/cookbook_cloudstack_wrapper) for example.
 
 
 Tested on CentOS 6.5 and Ubuntu 14.04
@@ -78,6 +78,8 @@ Which is equivalent to:
 -h xenserver \
 -F
 ```
+
+Simpler example: 
 
 ``` ruby
 # Using URL from CloudStack database
