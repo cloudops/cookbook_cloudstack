@@ -44,4 +44,6 @@ when "4.2"
         "kvm" => "http://d21ifhcun6b1t2.cloudfront.net/templates/4.2/systemvmtemplate-2013-06-12-master-kvm.qcow2.bz2",
         "lxc" => "http://d21ifhcun6b1t2.cloudfront.net/templates/acton/acton-systemvm-02062012.qcow2.bz2"
     }
+# when ? : if system VM template not define cloudstack_system_template will look
+#          for the URL define into cloudstack database.
 end
