@@ -28,6 +28,15 @@ package "cloudstack-management" do
      version node['cloudstack']['version']
    end
 end
+
+if platform?(%w{ubuntu debian})
+  # tomcat6 package installation automatically start tomcat6 on port 8080.
+  service 'tomcat6' do
+    action [:stop, :disable]
+  end
+end
+
+
 include_recipe "cloudstack::vhd-util"
 
 
@@ -64,7 +73,6 @@ end
 
 # Configure sudo for user cloud
 include_recipe "sudo"
-node.set['authorization']['sudo']['include_sudoers_d'] = true
 sudo 'cloud' do
   template 'sudoers_cloudstack.erb'
 end

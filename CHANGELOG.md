@@ -3,6 +3,10 @@ cloudstack CHANGELOG
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
+3.0.9
+-----
+- pdion891 - fix sudoers.
+
 3.0.8
 -----
 - pdion891 - update date in header.

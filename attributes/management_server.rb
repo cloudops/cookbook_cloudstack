@@ -21,6 +21,7 @@
 # Apache repos:
 ###############
 
+default['authorization']['sudo']['include_sudoers_d'] = "true"
 
 # /etc/security
 default['cloudstack']['nproc_limit_soft'] = "4096"
