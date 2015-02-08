@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-include Chef::Mixin::ShellOut
+#include Chef::Mixin::ShellOut
 include Cloudstack::Helper
 include Cloudstack::Database
 

@@ -91,7 +91,7 @@ module Cloudstack
   
     def cloudstack_is_running?
       # Test if CloudStack Management server is running on localhost.
-      port_open('localhost', 8080)
+      port_open('127.0.0.1', 8080)
     end
   
     def test_connection?(api_key, secret_key)

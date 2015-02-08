@@ -3,6 +3,10 @@ cloudstack CHANGELOG
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
+3.0.10
+------
+- pdion891 - fix port_open: localhost-> 127.0.0.1
+
 3.0.9
 -----
 - pdion891 - fix sudoers.
