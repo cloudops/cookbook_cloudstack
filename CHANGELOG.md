@@ -3,6 +3,11 @@ cloudstack CHANGELOG
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
+3.1.1
+-----
+- pdion891 - POST for login authentication use to generate admin api_keys
+           - update systemvm url for acs 4.5
+
 3.1.0
 -----
 - pdion891 - support cookbook mysql6

@@ -21,6 +21,14 @@
 default['cloudstack']['cloud-install-sys-tmplt'] = "/usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt"
 
 case node['cloudstack']['release_major']
+when "4.5"
+    default['cloudstack']['systemvm'] = {
+        "xenserver" => "http://cloudstack.apt-get.eu/systemvm/4.5/systemvm64template-4.5-xen.vhd.bz2",
+        "vmware" => "http://cloudstack.apt-get.eu/systemvm/4.5/systemvm64template-4.5-vmware.ova",
+        "kvm" => "http://cloudstack.apt-get.eu/systemvm/4.5/systemvm64template-4.5-kvm.qcow2.bz2",
+        "lxc" => "http://cloudstack.apt-get.eu/systemvm/4.5/systemvm64template-4.5-kvm.qcow2.bz2",
+        "hyperv" => "http://cloudstack.apt-get.eu/systemvm/4.5/systemvm64template-4.5-hyperv.vhd.zip"
+    }
 when "4.4"
     default['cloudstack']['systemvm'] = {
         "xenserver" => "http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.1-7-xen.vhd.bz2",
