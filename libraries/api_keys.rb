@@ -21,6 +21,7 @@
 # 
 # methods related to CloudStack API keys.
 #
+#
 module Cloudstack
   module ApiKeys
     def create_admin_apikeys
@@ -33,7 +34,7 @@ module Cloudstack
       ##################################################################
       if cloudstack_api_is_running? 
         # bypass the section if CloudStack is not running.
-        if ! @current_resource.admin_apikey.nil? or ! @current_resource.admin_secretkey.nil?
+        if @current_resource.admin_apikey or @current_resource.admin_secretkey
           # if keys attributes are empty search in Chef environment for other node having API-KEYS.
           other_nodes = search(:node, "chef_environment:#{node.chef_environment} AND cloudstack_admin_api_key:* NOT name:#{node.name}")
           if ! other_nodes.empty?
@@ -92,7 +93,7 @@ module Cloudstack
       uri = URI(url)
       uri.query = URI.encode_www_form(login_params)
       http = Net::HTTP.new(uri.hostname, uri.port)
-      res = http.get(uri.request_uri)
+      res = http.post(uri.request_uri, '') # POST enforced since ACS 4.6
       get_keys_params = {
           :sessionkey => JSON.parse(res.body)['loginresponse']['sessionkey'], 
           :command => "registerUserKeys", 
@@ -106,13 +107,13 @@ module Cloudstack
       sleep(2) # add some delay to have the session working 
       query_for_keys = http.get(uri2.request_uri, { 'Cookie' => res.response['set-cookie'].split('; ')[0] })
     
-      if users.code == "200"
+      if query_for_keys.code == "200"
         keys = {
           :api_key => JSON.parse(query_for_keys.body)["registeruserkeysresponse"]["userkeys"]["apikey"],
           :secret_key => JSON.parse(query_for_keys.body)["registeruserkeysresponse"]["userkeys"]["secretkey"]
         }
       else
-        Chef::Log.info "Error creating keys errorcode: #{users.code}"
+        Chef::Log.info "Error creating keys errorcode: #{query_for_keys.code}"
       end
       return keys
     end
@@ -121,7 +122,7 @@ module Cloudstack
     def keys_valid?
       # Test if current defined keys from Chef are valid
       #
-      unless @current_resource.admin_apikey.nil? or @current_resource.admin_secretkey.nil?
+      if @current_resource.admin_apikey or @current_resource.admin_secretkey
         # return false if one key is empty
         require 'cloudstack_ruby_client'
         begin
@@ -147,7 +148,7 @@ module Cloudstack
       uri = URI(url)
       uri.query = URI.encode_www_form(login_params)
       http = Net::HTTP.new(uri.hostname, uri.port)
-      res = http.get(uri.request_uri)
+      res = http.post(uri.request_uri, '') # POST enforced since ACS 4.6
       get_keys_params = {
           :sessionkey => JSON.parse(res.body)['loginresponse']['sessionkey'], 
           :command => "listUsers", 
