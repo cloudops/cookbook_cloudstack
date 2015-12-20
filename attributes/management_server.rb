@@ -21,13 +21,13 @@
 # Apache repos:
 ###############
 
-default['authorization']['sudo']['include_sudoers_d'] = "true"
+default['authorization']['sudo']['include_sudoers_d'] = 'true'
 
 # /etc/security
-default['cloudstack']['nproc_limit_soft'] = "4096"
-default['cloudstack']['nproc_limit_hard'] = "4096"
-default['cloudstack']['nproc_limit_file'] = "/etc/security/limits.d/cloudstack_nproc.conf"
+default['cloudstack']['nproc_limit_soft'] = 4096
+default['cloudstack']['nproc_limit_hard'] = 4096
+default['cloudstack']['nproc_limit_file'] = '/etc/security/limits.d/cloudstack_nproc.conf'
 
-default['cloudstack']['nofile_limit_soft'] = "4096"
-default['cloudstack']['nofile_limit_hard'] = "4096"
-default['cloudstack']['nofile_limit_file'] = "/etc/security/limits.d/cloudstack_nofile.conf"
+default['cloudstack']['nofile_limit_soft'] = 4096
+default['cloudstack']['nofile_limit_hard'] = 4096
+default['cloudstack']['nofile_limit_file'] = '/etc/security/limits.d/cloudstack_nofile.conf'

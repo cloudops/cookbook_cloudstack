@@ -3,6 +3,11 @@ cloudstack CHANGELOG
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
+4.0.0
+-----
+- pdion891 - integration to berkshelf and vagrant.
+           - update for new acs 4.6 release.
+
 3.1.1
 -----
 - pdion891 - POST for login authentication use to generate admin api_keys

@@ -18,7 +18,5 @@
 #
 
 chef_gem 'cloudstack_ruby_client' do
-  action :nothing
-end.run_action(:install)
-Gem.clear_paths
-
+  compile_time true
+end

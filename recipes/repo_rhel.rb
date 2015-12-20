@@ -17,11 +17,12 @@
 # limitations under the License.
 #
 
-include_recipe "yum"
+include_recipe 'yum'
 
 yum_repository 'cloudstack' do
-  description "Apache Cloudstack"
-  baseurl node["cloudstack"]["yum_repo"]
-  gpgcheck false
+  description 'Apache Cloudstack'
+  baseurl node['cloudstack']['repo_url']
+  gpgkey node['cloudstack']['repo_sign']
+  gpgcheck node['cloudstack']['repo_sign'].empty? ? false : true
   action :create
 end
