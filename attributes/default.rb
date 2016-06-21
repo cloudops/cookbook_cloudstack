@@ -32,7 +32,8 @@ end
 case node['platform']
 when 'centos', 'redhat', 'fedora', 'oracle'
   default['cloudstack']['repo_url']  = "http://cloudstack.apt-get.eu/centos/#{node['platform_version'].to_i}/#{node['cloudstack']['release_major']}/"
-  default['cloudstack']['repo_sign'] = 'http://cloudstack.apt-get.eu/RPM-GPG-KEY'
+  default['cloudstack']['repo_sign'] = ''
+  #default['cloudstack']['repo_sign'] = 'http://cloudstack.apt-get.eu/RPM-GPG-KEY'
 when 'ubuntu', 'debian'
   default['cloudstack']['repo_url']  = "http://cloudstack.apt-get.eu/ubuntu"
   default['cloudstack']['repo_sign'] = 'http://cloudstack.apt-get.eu/release.asc'
