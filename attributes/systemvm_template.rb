@@ -21,7 +21,7 @@
 default['cloudstack']['cloud-install-sys-tmplt'] = '/usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt'
 
 case node['cloudstack']['release_major']
-when '4.6', '4.7'
+when '4.6', '4.7', '4.8', '4.9'
     default['cloudstack']['systemvm'] = {
         'xenserver' => 'http://cloudstack.apt-get.eu/systemvm/4.6/systemvm64template-4.6.0-xen.vhd.bz2',
         'vmware'    => 'http://cloudstack.apt-get.eu/systemvm/4.6/systemvm64template-4.6.0-vmware.ova',

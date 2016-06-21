@@ -3,6 +3,10 @@ cloudstack CHANGELOG
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
+4.0.1
+-----
+- pdion891 - update release to 4.8 by default
+
 4.0.0
 -----
 - pdion891 - integration to berkshelf and vagrant.
