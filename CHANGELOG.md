@@ -3,6 +3,11 @@ cloudstack CHANGELOG
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
+4.0.3
+-----
+- pdion891 - change default to 4.9
+           - fix warning for chef 13.
+
 4.0.1
 -----
 - pdion891 - update release to 4.8 by default

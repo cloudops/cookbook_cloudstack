@@ -23,7 +23,7 @@
 default['cloudstack']['version'] = ""
 # relase_major = release version, used for the repo URL
 if node['cloudstack']['version'].empty?
-    default['cloudstack']['release_major'] = "4.8"
+    default['cloudstack']['release_major'] = "4.9"
 else
     default['cloudstack']['release_major'] =  "#{node['cloudstack']['version'].split('.')[0]}.#{node['cloudstack']['version'].split('.')[1]}"
 end
@@ -31,7 +31,7 @@ end
 # yum repo URL
 case node['platform']
 when 'centos', 'redhat', 'fedora', 'oracle'
-  default['cloudstack']['repo_url']  = "http://cloudstack.apt-get.eu/centos/#{node['platform_version'].to_i}/#{node['cloudstack']['release_major']}/"
+  default['cloudstack']['repo_url']  = "http://cloudstack.apt-get.eu/centos/$releasever/#{node['cloudstack']['release_major']}/"
   default['cloudstack']['repo_sign'] = ''
   #default['cloudstack']['repo_sign'] = 'http://cloudstack.apt-get.eu/RPM-GPG-KEY'
 when 'ubuntu', 'debian'

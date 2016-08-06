@@ -29,5 +29,5 @@ end
 service "cloudstack-usage" do
    supports :restart => true, :status => true, :start => true, :stop => true
    action [ :enable, :start ]
-   only_if { node.recipes.include?('cloudstack::management_server') }
+   only_if { node['recipes'].include?('cloudstack::management_server') }
 end
