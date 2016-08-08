@@ -23,7 +23,7 @@
 default['cloudstack']['version'] = ""
 # relase_major = release version, used for the repo URL
 if node['cloudstack']['version'].empty?
-    default['cloudstack']['release_major'] = "4.9"
+    default['cloudstack']['release_major'] = "4.8"
 else
     default['cloudstack']['release_major'] =  "#{node['cloudstack']['version'].split('.')[0]}.#{node['cloudstack']['version'].split('.')[1]}"
 end
@@ -36,8 +36,8 @@ when 'centos', 'redhat', 'fedora', 'oracle'
   #default['cloudstack']['repo_sign'] = 'http://cloudstack.apt-get.eu/RPM-GPG-KEY'
 when 'ubuntu', 'debian'
   default['cloudstack']['repo_url']  = "http://cloudstack.apt-get.eu/ubuntu"
-  default['cloudstack']['repo_sign'] = ''
-  #default['cloudstack']['repo_sign'] = 'http://cloudstack.apt-get.eu/release.asc'
+  default['cloudstack']['repo_sign'] = 'http://cloudstack.apt-get.eu/release.asc'
+  default['cloudstack']['repo_trust'] = true  # trust the community repo
 end
 # apt repo URL
 

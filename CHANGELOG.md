@@ -3,9 +3,9 @@ cloudstack CHANGELOG
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
-4.0.3
+4.0.4
 -----
-- pdion891 - change default to 4.9
+- pdion891 - update apt repo issue for missing pkg signature.
            - fix warning for chef 13.
 
 4.0.1

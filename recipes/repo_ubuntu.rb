@@ -24,7 +24,11 @@ apt_repository "cloudstack" do
   uri node['cloudstack']['repo_url']
   components [ node['cloudstack']['release_major'] ]
   distribution "precise"
-  key node['cloudstack']['repo_sign'] unless node['cloudstack']['repo_sign'].nil?
+  #if node['cloudstack']['repo_sign'].empty?
+    trusted true
+  #else
+    key node['cloudstack']['repo_sign'] 
+  #end
   action :add
 end
 
