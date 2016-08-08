@@ -36,7 +36,8 @@ when 'centos', 'redhat', 'fedora', 'oracle'
   #default['cloudstack']['repo_sign'] = 'http://cloudstack.apt-get.eu/RPM-GPG-KEY'
 when 'ubuntu', 'debian'
   default['cloudstack']['repo_url']  = "http://cloudstack.apt-get.eu/ubuntu"
-  default['cloudstack']['repo_sign'] = 'http://cloudstack.apt-get.eu/release.asc'
+  default['cloudstack']['repo_sign'] = ''
+  #default['cloudstack']['repo_sign'] = 'http://cloudstack.apt-get.eu/release.asc'
 end
 # apt repo URL
 
