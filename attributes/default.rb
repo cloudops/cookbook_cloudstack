@@ -23,7 +23,7 @@
 default['cloudstack']['version'] = ""
 # relase_major = release version, used for the repo URL
 if node['cloudstack']['version'].empty?
-    default['cloudstack']['release_major'] = "4.8"
+    default['cloudstack']['release_major'] = "4.9"
 else
     default['cloudstack']['release_major'] =  "#{node['cloudstack']['version'].split('.')[0]}.#{node['cloudstack']['version'].split('.')[1]}"
 end
