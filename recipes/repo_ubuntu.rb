@@ -23,7 +23,7 @@ include_recipe "apt"
 apt_repository "cloudstack" do
   uri node['cloudstack']['repo_url']
   components [ node['cloudstack']['release_major'] ]
-  distribution "precise"
+  distribution "trusty"
   trusted node['cloudstack']['repo_trust']
   unless node['cloudstack']['repo_sign'].empty? 
     key node['cloudstack']['repo_sign'] 
