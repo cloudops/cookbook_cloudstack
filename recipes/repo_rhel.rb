@@ -26,3 +26,11 @@ yum_repository 'cloudstack' do
   gpgcheck node['cloudstack']['repo_sign'].empty? ? false : true
   action :create
 end
+
+yum_repository 'mysql-connector' do
+  description 'MySQL Community connectors'
+  baseurl 'http://repo.mysql.com/yum/mysql-connectors-community/el/$releasever/$basearch/'
+  gpgkey 'http://repo.mysql.com/RPM-GPG-KEY-mysql'
+  gpgcheck true
+  action :create
+end

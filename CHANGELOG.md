@@ -3,6 +3,10 @@ cloudstack CHANGELOG
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
+4.0.5
+-----
+- pdion891 - add repo for mysql-connector-python
+
 4.0.4
 -----
 - pdion891 - update apt repo issue for missing pkg signature.
