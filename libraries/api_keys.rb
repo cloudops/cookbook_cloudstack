@@ -36,7 +36,12 @@ module Cloudstack
         # bypass the section if CloudStack is not running.
         if @current_resource.admin_apikey or @current_resource.admin_secretkey
           # if keys attributes are empty search in Chef environment for other node having API-KEYS.
-          other_nodes = search(:node, "chef_environment:#{node.chef_environment} AND cloudstack_admin_api_key:* NOT name:#{node.name}")
+          if Chef::Config[:solo]
+            Chef::Log.warn('This recipe uses search. Chef Solo does not support search.')
+            other_nodes = []
+          else
+            other_nodes = search(:node, "chef_environment:#{node.chef_environment} AND cloudstack_admin_api_key:* NOT name:#{node.name}")
+          end
           if ! other_nodes.empty?
             @current_resource.admin_apikey(other_nodes.first["cloudstack"]["admin"]["api_key"])
             @current_resource.admin_secretkey(other_nodes.first["cloudstack"]["admin"]["secret_key"])
