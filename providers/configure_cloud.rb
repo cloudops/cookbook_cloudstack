@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: marvin
+# Cookbook Name:: cloudstack
 # provider:: configure cloud
 # Author:: Ian Duffy (<ian@ianduffy.ie>)
 #
@@ -16,12 +16,14 @@
 # limitations under the License.
 #
 
-include Cloudstack
+include Cloudstack::Helper
 
 # Support whyrun
 def whyrun_supported?
   true
 end
+
+use_inline_resources
 
 action :run do
   if ::File.exists?(new_resource.name)
@@ -37,7 +39,7 @@ action :run do
 
     if cloudstack_api_is_running?
 
-      template '/tmp/marvin.cfg' do
+      template "#{Chef::Config[:file_cache_path]}/marvin.cfg" do
         source new_resource.name
         local true
         variables(
@@ -54,7 +56,7 @@ action :run do
       end
 
       bash 'Configuring the cloud' do
-        code 'python -m marvin.deployDataCenter -i /tmp/marvin.cfg || true'
+        code "python -m marvin.deployDataCenter -i #{Chef::Config[:file_cache_path]}/marvin.cfg || true"
       end
     end
   end

@@ -132,6 +132,26 @@ cloudstack_global_setting "expunge.delay" do
 end
 ```
 
+### cloudstack_configure_cloud
+
+Configure cloudstack infrastructure using CloudStack Marvin. A Marvin configuration template file must be provided.
+
+#### examples
+
+``` ruby
+cloudstack_configure_cloud "/vagrant/marvin.cfg" do
+  database_server_ip node['cloudstack']['db']['host']
+end
+```
+
+``` ruby
+cloudstack_configure_cloud node['cloudstack']['configuration'] do
+  database_server_ip node['cloudstack']['db']['host']
+  database_user node['cloudstack']['db']['user']
+  database_password node['cloudstack']['db']['password']
+end
+```
+
 
 Recipes
 -------

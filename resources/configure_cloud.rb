@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: marvin
+# Cookbook Name:: cloudstack
 # resource:: configure cloud
 # Author:: Ian Duffy (<ian@ianduffy.ie>)
 #
