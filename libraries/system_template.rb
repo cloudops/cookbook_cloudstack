@@ -30,19 +30,20 @@ module Cloudstack
       Chef::Log.debug "template id = #{template_id.stdout.chomp}"
       return template_id.stdout.chomp
     end
-    
-    
+
     # Create or mount secondary storage path
     def secondary_storage
-      directory @current_resource.nfs_path do
-        owner "root"
-        group "root"
-        action :create
-        recursive true
-        not_if { ::File.exist?(@current_resource.nfs_path)}
+      unless ::File.exist?(@current_resource.nfs_path)
+        # Use condition enclosing instead of "not_if" guard because resource nfs_path is not defined in case of resource merging
+        directory @current_resource.nfs_path do
+          owner "root"
+          group "root"
+          action :create
+          recursive true
+        end
       end
     end
-    
+
     def download_systemvm_template
       # Create database configuration for cloudstack management server that will use and existing database.
       #puts "Downloading system template from: #{@current_resource.url}"
