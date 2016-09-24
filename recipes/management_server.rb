@@ -29,11 +29,10 @@ package "cloudstack-management" do
    end
 end
 
-if platform?(%w{ubuntu debian})
-  # tomcat6 package installation automatically start tomcat6 on port 8080.
-  service 'tomcat6' do
-    action [:stop, :disable]
-  end
+# tomcat6 package installation automatically start tomcat6 on port 8080.
+service 'tomcat6' do
+  action [:stop, :disable]
+  only_if { platform?(%w{ubuntu debian}) }
 end
 
 

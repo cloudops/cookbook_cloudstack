@@ -22,6 +22,8 @@ include Chef::Mixin::ShellOut
 include Cloudstack::Helper
 include Cloudstack::SystemTemplate
 
+use_inline_resources
+
 action :create do
   load_current_resource
 
@@ -53,7 +55,10 @@ def load_current_resource
   else
     if db_exist?(@current_resource.db_host, @current_resource.db_user, @current_resource.db_password)
       if @current_resource.url.nil?
-        @current_resource.url(`mysql -h #{@current_resource.db_host} --user=#{@current_resource.db_user} --password=#{@current_resource.db_password} --skip-column-names -U cloud -e 'select max(url) from cloud.vm_template where type = \"SYSTEM\" and hypervisor_type = \"#{@current_resource.hypervisor}\" and removed is null'`.chomp)
+        cmd = Mixlib::ShellOut.new("mysql -h #{@current_resource.db_host} --user=#{@current_resource.db_user} --password=#{@current_resource.db_password} --skip-column-names -U cloud -e 'select max(url) from cloud.vm_template where type = \"SYSTEM\" and hypervisor_type = \"#{@current_resource.hypervisor}\" and removed is null'")
+        cmd.run_command
+        cmd.error!
+        @current_resource.url(cmd.stdout.chomp)
       end
       template_id = get_template_id
       Chef::Log.debug "looking for template in #{@current_resource.nfs_path}/template/tmpl/1/#{template_id}"

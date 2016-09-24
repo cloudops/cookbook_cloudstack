@@ -24,6 +24,8 @@ require 'json'
 include Cloudstack::Helper
 include Cloudstack::GlobalSetting
 
+use_inline_resources
+
 #########
 # ACTIONS
 #########

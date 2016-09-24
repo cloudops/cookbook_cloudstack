@@ -33,6 +33,8 @@ def whyrun_supported?
   true
 end
 
+use_inline_resources
+
 #########
 # ACTIONS
 #########

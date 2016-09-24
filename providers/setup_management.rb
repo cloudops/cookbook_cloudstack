@@ -19,6 +19,8 @@
 # execute default cloudstack configuration script 
 ###############################################################################
 
+use_inline_resources
+
 action :run do
 
   bash "cloudstack-setup-management" do

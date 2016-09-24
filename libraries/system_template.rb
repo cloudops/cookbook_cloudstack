@@ -34,13 +34,12 @@ module Cloudstack
     
     # Create or mount secondary storage path
     def secondary_storage
-      unless ::File.exist?(@current_resource.nfs_path)
-        directory @current_resource.nfs_path do
-          owner "root"
-          group "root"
-          action :create
-          recursive true
-        end
+      directory @current_resource.nfs_path do
+        owner "root"
+        group "root"
+        action :create
+        recursive true
+        not_if { ::File.exist?(@current_resource.nfs_path)}
       end
     end
     

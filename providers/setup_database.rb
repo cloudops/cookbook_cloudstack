@@ -21,6 +21,8 @@
 include Cloudstack::Helper
 include Cloudstack::Database
 
+use_inline_resources
+
 action :create do
   #load_current_resource
   #Chef::Log.info "creating cloudstack database"
