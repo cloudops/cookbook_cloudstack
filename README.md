@@ -191,6 +191,9 @@ MySQL tunning based on official CloudStack documentation.
 
 Configure CloudStack to send Events into RabbitMQ message bus. Work for CloudStack 4.3 and latest. RabbitMQ must be installed and configured somewhere, default values are for localhost.
 
+### cloudstack::marvin
+
+Install CloudStack Marvin (python program used to automate CloudStack infrastructure configuration).
 
 ### cloudstack::default
 
