@@ -3,6 +3,10 @@ cloudstack CHANGELOG
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
+4.0.7
+-----
+- pdion891 - add support for CentOS 7 for ACS 4.10 with JDK8
+
 4.0.5
 -----
 - pdion891 - add repo for mysql-connector-python
@@ -97,4 +101,3 @@ This file is used to list changes made in each version of the co-cloudstack cook
 0.1.0
 -----
 - pdion891 - Initial release of co-cloudstack
-
