@@ -20,13 +20,14 @@
 ####
 
 include_recipe 'cloudstack::default'
-include_recipe "cloudstack::repo"
+include_recipe 'cloudstack::repo'
 
 package "cloudstack-management" do
    action :install
    if ! node['cloudstack']['version'].empty?
      version node['cloudstack']['version']
    end
+   timeout 300
 end
 
 # tomcat6 package installation automatically start tomcat6 on port 8080.
@@ -82,4 +83,3 @@ end
 #  supports :restart => true, :status => true, :start => true, :stop => true
 #  action :nothing
 #end
-

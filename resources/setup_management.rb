@@ -2,7 +2,7 @@
 # Cookbook Name:: cloudstack
 # Resource:: setup_management
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
-# Copyright 2015, CloudOps, Inc.
+# Copyright 2017, CloudOps, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.require "system_vm_template"
@@ -18,13 +18,24 @@
 # limitations under the License.
 #
 #
-# execute default cloudstack configuration script 
+# execute default cloudstack configuration script
 ###############################################################################
 
-actions :run
+property :host,    String,        name_property: true
+property :tomcat7, [true, false], required: false, default: false
+property :https,   [true, false], required: false, default: false
+property :nostart, [true, false], required: false, default: false
 
-default_action :run
+tomcat7 = true if node['platform'] == 'centos' && node['platform_version'].split('.')[0] == '7'
 
-attribute :host                   , :name_attribute => true, :kind_of => String
+action :run do
+  params = ''
+  params += ' --tomcat7' if tomcat7
+  params += ' --https'   if https
+  params += ' --nostart' if nostart
 
-attr_accessor :exists
+  bash "cloudstack-setup-management" do
+    code "/usr/bin/cloudstack-setup-management #{params}"
+    not_if { ::File.exists?("/etc/cloudstack/management/tomcat6.conf") || ::File.exists?("/etc/cloudstack/management/server.xml")}
+  end
+end

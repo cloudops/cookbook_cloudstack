@@ -23,7 +23,7 @@ module Cloudstack
 
     # Support whyrun
     def whyrun_supported?
-      true
+      false
     end
     
     def load_current_value(name)
