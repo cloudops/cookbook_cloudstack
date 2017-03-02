@@ -27,7 +27,6 @@ package "cloudstack-management" do
    if ! node['cloudstack']['version'].empty?
      version node['cloudstack']['version']
    end
-   timeout 300
 end
 
 # tomcat6 package installation automatically start tomcat6 on port 8080.
