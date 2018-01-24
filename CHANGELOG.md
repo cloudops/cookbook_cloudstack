@@ -3,6 +3,10 @@ cloudstack CHANGELOG
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
+4.1.0
+-----
+- khos2ow - add support for enabling/disabling cloudstack repo
+
 4.0.7
 -----
 - pdion891 - add support for CentOS 7 for ACS 4.10 with JDK8

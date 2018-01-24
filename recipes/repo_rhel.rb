@@ -22,6 +22,7 @@ include_recipe 'yum'
 yum_repository 'cloudstack' do
   description 'Apache Cloudstack'
   baseurl node['cloudstack']['repo_url']
+  enabled node['cloudstack']['repo_enabled']
   gpgkey node['cloudstack']['repo_sign']
   gpgcheck node['cloudstack']['repo_sign'].empty? ? false : true
   action :create
