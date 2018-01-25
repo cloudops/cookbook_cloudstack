@@ -3,6 +3,10 @@ cloudstack CHANGELOG
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
+4.1.1
+-----
+- khos2ow - add server-id for mysql
+
 4.1.0
 -----
 - khos2ow - add support for enabling/disabling cloudstack repo
