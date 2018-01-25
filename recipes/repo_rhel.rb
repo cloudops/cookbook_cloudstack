@@ -23,6 +23,7 @@ yum_repository 'cloudstack' do
   description 'Apache Cloudstack'
   baseurl node['cloudstack']['repo_url']
   enabled node['cloudstack']['repo_enabled']
+  metadata_expire node['cloudstack']['repo_metadata_expire']
   gpgkey node['cloudstack']['repo_sign']
   gpgcheck node['cloudstack']['repo_sign'].empty? ? false : true
   action :create
