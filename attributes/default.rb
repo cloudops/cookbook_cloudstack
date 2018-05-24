@@ -34,6 +34,8 @@ when 'centos', 'redhat', 'fedora', 'oracle'
   default['cloudstack']['repo_url']  = "http://cloudstack.apt-get.eu/centos/$releasever/#{node['cloudstack']['release_major']}/"
   default['cloudstack']['repo_sign'] = ''
   #default['cloudstack']['repo_sign'] = 'http://cloudstack.apt-get.eu/RPM-GPG-KEY'
+  default['cloudstack']['repo_enabled'] = true
+  default['cloudstack']['repo_metadata_expire'] = '6h'
 when 'ubuntu', 'debian'
   default['cloudstack']['repo_url']  = "http://cloudstack.apt-get.eu/ubuntu"
   default['cloudstack']['repo_sign'] = 'http://cloudstack.apt-get.eu/release.asc'
