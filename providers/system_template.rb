@@ -41,7 +41,7 @@ end
 def load_current_resource
   @current_resource = Chef::Resource::CloudstackSystemTemplate.new(@new_resource.name)
   @current_resource.name(@new_resource.name)
-  @current_resource.url(@new_resource.url)  
+  @current_resource.url(@new_resource.url)
   @current_resource.hypervisor(@new_resource.hypervisor)
   @current_resource.nfs_path(@new_resource.nfs_path)
   @current_resource.nfs_server(@new_resource.nfs_server)
@@ -55,7 +55,7 @@ def load_current_resource
   else
     if db_exist?(@current_resource.db_host, @current_resource.db_user, @current_resource.db_password)
       if @current_resource.url.nil?
-        cmd = Mixlib::ShellOut.new("mysql -h #{@current_resource.db_host} --user=#{@current_resource.db_user} --password=#{@current_resource.db_password} --skip-column-names -U cloud -e 'select max(url) from cloud.vm_template where type = \"SYSTEM\" and hypervisor_type = \"#{@current_resource.hypervisor}\" and removed is null'")
+        cmd = Mixlib::ShellOut.new("mysql -h #{@current_resource.db_host} --user=#{@current_resource.db_user} --password='#{@current_resource.db_password}' --skip-column-names -U cloud -e 'select max(url) from cloud.vm_template where type = \"SYSTEM\" and hypervisor_type = \"#{@current_resource.hypervisor}\" and removed is null'")
         cmd.run_command
         cmd.error!
         @current_resource.url(cmd.stdout.chomp)
@@ -74,4 +74,3 @@ def load_current_resource
   end
 
 end
-
