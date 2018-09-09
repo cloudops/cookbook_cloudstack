@@ -3,6 +3,10 @@ cloudstack CHANGELOG
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
+4.1.3
+-----
+- pdion891 - update default version to 4.11.
+
 4.1.2
 -----
 - khos2ow - add default metadata expire to cloudstack repo

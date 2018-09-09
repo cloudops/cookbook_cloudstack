@@ -2,7 +2,7 @@
 # Cookbook Name:: cloudstack
 # Provider:: global_setting
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
-# Copyright 2015, CloudOps, Inc.
+# Copyright 2018, CloudOps, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@
 # Configure Global Settings
 ###############################################################################
 
-#require 'cloudstack_ruby_client'
+# require 'cloudstack_ruby_client'
 require 'json'
 include Cloudstack::Helper
 include Cloudstack::GlobalSetting
 
-use_inline_resources
+use_inline_resources if defined?(:use_inline_resources) # ~FC113
 
 #########
 # ACTIONS
@@ -39,8 +39,6 @@ action :update do
     end
   end
 end
-
-
 
 def load_current_resource
   require 'cloudstack_ruby_client'
@@ -57,9 +55,9 @@ def load_current_resource
 
   if cloudstack_is_running?
     if @current_resource.admin_apikey.nil?
-      Chef::Log.error "admin_apikey empty, cannot update Global Settings"
+      Chef::Log.error 'admin_apikey empty, cannot update Global Settings'
     else
-      client = CloudstackRubyClient::Client.new("http://localhost:8080/client/api/", @current_resource.admin_apikey, @current_resource.admin_secretkey, false)
+      client = CloudstackRubyClient::Client.new('http://localhost:8080/client/api/', @current_resource.admin_apikey, @current_resource.admin_secretkey, false)
       current_value = load_current_value(@current_resource.name)
       if current_value.nil?
         Chef::Log.error "Global Setting: #{@current_resource.name} not found"
@@ -72,7 +70,6 @@ def load_current_resource
       end
     end
   else
-    Chef::Log.error "CloudStack not running, cannot update Global Settings."
+    Chef::Log.error 'CloudStack not running, cannot update Global Settings.'
   end
 end
-

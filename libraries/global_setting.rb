@@ -2,7 +2,7 @@
 # Cookbook Name:: cloudstack
 # Library:: global_setting
 # Author:: Pierre-Luc Dion <pdion@cloudops.com>
-# Copyright 2015, CloudOps, Inc.
+# Copyright 2018, CloudOps, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,13 +29,13 @@ module Cloudstack
     def load_current_value(name)
       require 'cloudstack_ruby_client'
       # get CloudStack current value of the Global Setting
-      client = CloudstackRubyClient::Client.new("http://localhost:8080/client/api/", @current_resource.admin_apikey, @current_resource.admin_secretkey, false)
-      client.list_configurations(:name => name)["configuration"].first["value"]
+      client = CloudstackRubyClient::Client.new('http://localhost:8080/client/api/', @current_resource.admin_apikey, @current_resource.admin_secretkey, false)
+      client.list_configurations(:name => name)['configuration'].first['value']
     end
     
     def update_setting(name, value)
       require 'cloudstack_ruby_client'
-      client = CloudstackRubyClient::Client.new("http://localhost:8080/client/api/", @current_resource.admin_apikey, @current_resource.admin_secretkey, false)
+      client = CloudstackRubyClient::Client.new('http://localhost:8080/client/api/', @current_resource.admin_apikey, @current_resource.admin_secretkey, false)
       client.update_configuration({
           :name => name,
           :value => value

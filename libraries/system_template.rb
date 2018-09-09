@@ -1,8 +1,8 @@
- #
+#
 # Cookbook Name:: cloudstack
 # Library:: system_template
 # Author:: Pierre-Luc Dion <pdion@cloudops.com>
-# Copyright 2015, CloudOps, Inc.
+# Copyright 2018, CloudOps, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ module Cloudstack
     # retrieve template ID from database
     def get_template_id
       # get template ID from database to check path
-      Chef::Log.debug "Retrieve template ID from database"
+      Chef::Log.debug 'Retrieve template ID from database'
       template_cmd = "mysql -h #{@current_resource.db_host} --user=#{@current_resource.db_user} --password=#{@current_resource.db_password} --skip-column-names -U cloud -e 'select max(id) from cloud.vm_template where type = \"SYSTEM\" and hypervisor_type = \"#{@current_resource.hypervisor}\" and removed is null'"
       template_id = Mixlib::ShellOut.new(template_cmd)
       template_id.run_command
@@ -34,10 +34,10 @@ module Cloudstack
     # Create or mount secondary storage path
     def secondary_storage
       unless ::File.exist?(@current_resource.nfs_path)
-        # Use condition enclosing instead of "not_if" guard because resource nfs_path is not defined in case of resource merging
+        # Use condition enclosing instead of 'not_if' guard because resource nfs_path is not defined in case of resource merging
         directory @current_resource.nfs_path do
-          owner "root"
-          group "root"
+          owner 'root'
+          group 'root'
           action :create
           recursive true
         end

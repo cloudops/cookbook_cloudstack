@@ -2,7 +2,7 @@
 # Cookbook Name:: cloudstack
 # Provider:: setup_database
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
-# Copyright 2015, CloudOps, Inc.
+# Copyright 2018, CloudOps, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,22 +21,22 @@
 include Cloudstack::Helper
 include Cloudstack::Database
 
-use_inline_resources
+use_inline_resources if defined?(:use_inline_resources) # ~FC113
 
 action :create do
-  #load_current_resource
-  #Chef::Log.info "creating cloudstack database"
+  # load_current_resource
+  # Chef::Log.info 'creating cloudstack database'
   unless @current_resource.exists
     # 1. check if database exist, if so create connection config but do not init db.
     # 2. if db not exist, create db and create connection
-    @scriptname = "/usr/bin/cloudstack-setup-databases"
+    @scriptname = '/usr/bin/cloudstack-setup-databases'
     if ::File.exist?(@scriptname)
       if db_exist?(@current_resource.ip, @current_resource.user, @current_resource.password)
-        converge_by("Using existing CloudStack database") do
+        converge_by('Using existing CloudStack database') do
           init_config_database
         end
       else
-        converge_by("Creating CloudStack database") do
+        converge_by('Creating CloudStack database') do
           init_database
         end
       end
@@ -56,7 +56,7 @@ def load_current_resource
   @current_resource.root_password(@new_resource.root_password)
   @current_resource.management_server_key(@new_resource.management_server_key)
   @current_resource.database_key(@new_resource.database_key)
-  
+
   if cloudstack_is_running?
     @current_resource.exists = true
   else
@@ -64,7 +64,7 @@ def load_current_resource
       if db_exist?(@current_resource.ip, @current_resource.user, @current_resource.password)
         @current_resource.exists = true
       else
-        Chef::Log.info "Database server ready, not database found, creating it..."
+        Chef::Log.info 'Database server ready, not database found, creating it...'
         @current_resource.exists = false
       end
     else

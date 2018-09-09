@@ -2,7 +2,7 @@
 # Cookbook Name:: cloudstack
 # Provider:: system_template
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
-# Copyright 2015, CloudOps, Inc.
+# Copyright 2018, CloudOps, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,12 +22,12 @@ include Chef::Mixin::ShellOut
 include Cloudstack::Helper
 include Cloudstack::SystemTemplate
 
-use_inline_resources
+use_inline_resources if defined?(:use_inline_resources) # ~FC113
 
 action :create do
   load_current_resource
 
-  #Chef::Log.info "creating cloudstack database"
+  # Chef::Log.info 'creating cloudstack database'
   unless @current_resource.exists
     converge_by("Downloading system template from: #{@current_resource.url}") do
       #test_connection?(@current_resource.admin_apikey, @current_resource.admin_secretkey)
@@ -36,7 +36,6 @@ action :create do
     end
   end
 end
-
 
 def load_current_resource
   @current_resource = Chef::Resource::CloudstackSystemTemplate.new(@new_resource.name)
@@ -69,8 +68,7 @@ def load_current_resource
         @current_resource.exists = false
       end
     else
-      Chef::Log.error "Database not configured. Cannot retrieve Template URL"
+      Chef::Log.error 'Database not configured. Cannot retrieve Template URL'
     end
   end
-
 end

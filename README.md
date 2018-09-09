@@ -4,7 +4,7 @@ cloudstack Cookbook
 Install and configure [Apache Cloudstack](http://cloudstack.apache.org) using [Chef](http://www.chef.io/). A wrapper cookbook is prefered in order to Install Apache CloudStack properly, refer to [cloudstack_wrapper cookbook](https://github.com/cloudops/cookbook_cloudstack_wrapper) for example.
 
 
-Tested on CentOS 6.5 and Ubuntu 14.04
+Tested on CentOS 7 and Ubuntu 16.04
 
 
 About Apache Cloudstack
