@@ -20,6 +20,9 @@
 default['cloudstack']['cloud-install-sys-tmplt'] = '/usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt'
 
 case node['cloudstack']['release_major']
+# when ? : if system VM template not define cloudstack_system_template will look
+# for the URL define into cloudstack database.
+
 when '4.11'
   default['cloudstack']['systemvm'] = {
     'xenserver' => 'http://download.cloudstack.org/systemvm/4.11/systemvmtemplate-4.11.1-xen.vhd.bz2',
@@ -27,8 +30,7 @@ when '4.11'
     'kvm'       => 'http://download.cloudstack.org/systemvm/4.11/systemvmtemplate-4.11.1-kvm.qcow2.bz2',
     'lxc'       => 'http://download.cloudstack.org/systemvm/4.11/systemvmtemplate-4.11.1-kvm.qcow2.bz2',
     'hyperv'    => 'http://download.cloudstack.org/systemvm/4.11/systemvmtemplate-4.11.1-hyperv.vhd.zip',
-    'kvm'       => 'http://download.cloudstack.org/systemvm/4.11/systemvmtemplate-4.11.1-ovm.raw.bz2',
-    'ovm3'      => 'http://download.cloudstack.org/systemvm/4.11/systemvmtemplate-4.11.1-ovm.raw.bz2'
+    'ovm3'      => 'http://download.cloudstack.org/systemvm/4.11/systemvmtemplate-4.11.1-ovm.raw.bz2',
   }
 when '4.6', '4.7', '4.8', '4.9'
   default['cloudstack']['systemvm'] = {
@@ -37,7 +39,7 @@ when '4.6', '4.7', '4.8', '4.9'
     'kvm'       => 'http://cloudstack.apt-get.eu/systemvm/4.6/systemvm64template-4.6.0-kvm.qcow2.bz2',
     'lxc'       => 'http://cloudstack.apt-get.eu/systemvm/4.6/systemvm64template-4.6.0-kvm.qcow2.bz2',
     'hyperv'    => 'http://cloudstack.apt-get.eu/systemvm/4.6/systemvm64template-4.6.0-hyperv.vhd.zip',
-    'ovm3'      => 'http://cloudstack.apt-get.eu/systemvm/4.6/systemvm64template-4.6.0-ovm.raw.bz2'
+    'ovm3'      => 'http://cloudstack.apt-get.eu/systemvm/4.6/systemvm64template-4.6.0-ovm.raw.bz2',
   }
 when '4.5'
   default['cloudstack']['systemvm'] = {
@@ -45,7 +47,7 @@ when '4.5'
     'vmware'    => 'http://cloudstack.apt-get.eu/systemvm/4.5/systemvm64template-4.5-vmware.ova',
     'kvm'       => 'http://cloudstack.apt-get.eu/systemvm/4.5/systemvm64template-4.5-kvm.qcow2.bz2',
     'lxc'       => 'http://cloudstack.apt-get.eu/systemvm/4.5/systemvm64template-4.5-kvm.qcow2.bz2',
-    'hyperv'    => 'http://cloudstack.apt-get.eu/systemvm/4.5/systemvm64template-4.5-hyperv.vhd.zip'
+    'hyperv'    => 'http://cloudstack.apt-get.eu/systemvm/4.5/systemvm64template-4.5-hyperv.vhd.zip',
   }
 when '4.4'
   default['cloudstack']['systemvm'] = {
@@ -53,7 +55,7 @@ when '4.4'
     'vmware'    => 'http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.1-7-vmware.ova',
     'kvm'       => 'http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.1-7-kvm.qcow2.bz2',
     'lxc'       => 'http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.1-7-kvm.qcow2.bz2',
-    'hyperv'    => 'http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.1-7-hyperv.vhd'
+    'hyperv'    => 'http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.1-7-hyperv.vhd',
   }
 when '4.3'
   default['cloudstack']['systemvm'] = {
@@ -61,15 +63,13 @@ when '4.3'
     'vmware'    => 'http://download.cloud.com/templates/4.3/systemvm64template-2014-06-23-master-vmware.ova',
     'kvm'       => 'http://download.cloud.com/templates/4.3/systemvm64template-2014-06-23-master-kvm.qcow2.bz2',
     'lxc'       => 'http://download.cloud.com/templates/4.3/systemvm64template-2014-06-23-master-kvm.qcow2.bz2',
-    'hyperv'    => 'http://download.cloud.com/templates/4.3/systemvm64template-2014-06-23-master-hyperv.vhd.bz2'
+    'hyperv'    => 'http://download.cloud.com/templates/4.3/systemvm64template-2014-06-23-master-hyperv.vhd.bz2',
   }
 when '4.2'
   default['cloudstack']['systemvm'] = {
     'xenserver' => 'http://d21ifhcun6b1t2.cloudfront.net/templates/4.2/systemvmtemplate-2013-07-12-master-xen.vhd.bz2',
     'vmware'    => 'http://d21ifhcun6b1t2.cloudfront.net/templates/4.2/systemvmtemplate-4.2-vh7.ova',
     'kvm'       => 'http://d21ifhcun6b1t2.cloudfront.net/templates/4.2/systemvmtemplate-2013-06-12-master-kvm.qcow2.bz2',
-    'lxc'       => 'http://d21ifhcun6b1t2.cloudfront.net/templates/acton/acton-systemvm-02062012.qcow2.bz2'
+    'lxc'       => 'http://d21ifhcun6b1t2.cloudfront.net/templates/acton/acton-systemvm-02062012.qcow2.bz2',
   }
-# when ? : if system VM template not define cloudstack_system_template will look
-#          for the URL define into cloudstack database.
 end

@@ -22,24 +22,24 @@
 # version = version of package to install if not define = latest from the repo
 default['cloudstack']['version'] = ''
 # relase_major = release version, used for the repo URL
-if node['cloudstack']['version'].empty?
-    default['cloudstack']['release_major'] = '4.11'
-else
-    default['cloudstack']['release_major'] =  "#{node['cloudstack']['version'].split('.')[0]}.#{node['cloudstack']['version'].split('.')[1]}"
-end
+default['cloudstack']['release_major'] = if node['cloudstack']['version'].empty?
+                                           '4.11'
+                                         else
+                                           "#{node['cloudstack']['version'].split('.')[0]}.#{node['cloudstack']['version'].split('.')[1]}"
+                                         end
 
 # yum repo URL
 case node['platform']
 when 'centos', 'redhat', 'fedora', 'oracle'
   default['cloudstack']['repo_url']  = "http://cloudstack.apt-get.eu/centos/$releasever/#{node['cloudstack']['release_major']}/"
   default['cloudstack']['repo_sign'] = ''
-  #default['cloudstack']['repo_sign'] = 'http://cloudstack.apt-get.eu/RPM-GPG-KEY'
+  # default['cloudstack']['repo_sign'] = 'http://cloudstack.apt-get.eu/RPM-GPG-KEY'
   default['cloudstack']['repo_enabled'] = true
   default['cloudstack']['repo_metadata_expire'] = '6h'
 when 'ubuntu', 'debian'
   default['cloudstack']['repo_url']  = 'http://cloudstack.apt-get.eu/ubuntu'
   default['cloudstack']['repo_sign'] = 'http://cloudstack.apt-get.eu/release.asc'
-  default['cloudstack']['repo_trust'] = true  # trust the community repo
+  default['cloudstack']['repo_trust'] = true # trust the community repo
 end
 # apt repo URL
 
