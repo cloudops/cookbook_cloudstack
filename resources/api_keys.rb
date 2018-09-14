@@ -21,11 +21,11 @@ actions :create, :reset
 
 default_action :create
 
-attribute :username       , :name_attribute => true, :kind_of => String
-attribute :url            , :kind_of => String, :default => 'http://localhost:8080/client/api'
-attribute :password       , :kind_of => String, :default => 'password'
-attribute :admin_apikey   , :kind_of => String
-attribute :admin_secretkey, :kind_of => String
-attribute :ssl 			      , :equal_to => [true, false, 'true', 'false'], :default => false
+attribute :username,        name_attribute: true, kind_of: String
+attribute :url,             kind_of: String, default: 'http://localhost:8080/client/api'
+attribute :password,        kind_of: String, default: 'password'
+attribute :admin_apikey,    kind_of: String
+attribute :admin_secretkey, kind_of: String
+attribute :ssl,             equal_to: [true, false, 'true', 'false'], default: false
 
 attr_accessor :exists

@@ -33,7 +33,7 @@ action :update do
   unless @current_resource.admin_apikey.nil?
     unless @current_resource.exists
       converge_by("Update Global Setting: #{@current_resource.name} to #{@current_resource.value}") do
-        #test_connection?(@current_resource.admin_apikey, @current_resource.admin_secretkey)
+        # test_connection?(@current_resource.admin_apikey, @current_resource.admin_secretkey)
         update_setting(@current_resource.name, @current_resource.value)
       end
     end
@@ -44,7 +44,7 @@ def load_current_resource
   require 'cloudstack_ruby_client'
   @current_resource = Chef::Resource::CloudstackGlobalSetting.new(@new_resource.name)
   @current_resource.name(@new_resource.name)
-  if $admin_apikey.nil? 
+  if $admin_apikey.nil?
     @current_resource.admin_apikey(@new_resource.admin_apikey)
     @current_resource.admin_secretkey(@new_resource.admin_secretkey)
   else # if it's the first run on the server $admin_apikey will not be empty
@@ -61,12 +61,10 @@ def load_current_resource
       current_value = load_current_value(@current_resource.name)
       if current_value.nil?
         Chef::Log.error "Global Setting: #{@current_resource.name} not found"
+      elsif @current_resource.value == current_value
+        @current_resource.exists = true
       else
-        if @current_resource.value == current_value
-          @current_resource.exists = true
-        else
-          @current_resource.exists = false
-        end
+        @current_resource.exists = false
       end
     end
   else

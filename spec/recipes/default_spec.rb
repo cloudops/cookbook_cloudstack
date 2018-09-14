@@ -17,7 +17,6 @@ describe 'cloudstack::default' do
   it 'does something' do
     expect(chef_run).to do_something('...')
   end
-
 end
 
 describe 'cloudstack::cloudstack_management' do

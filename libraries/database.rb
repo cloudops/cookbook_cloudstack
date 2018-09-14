@@ -43,7 +43,7 @@ module Cloudstack
     def dbconf_exist?
       # test if db.properties as been modified from default installation file. if password encrypted, then we step there to not break anything.
       Chef::Log.debug 'Checking to see if database config db.properties as been configured'
-      conf_exist = Mixlib::ShellOut.new("cat /etc/cloudstack/management/db.properties |grep \"ENC(\"")
+      conf_exist = Mixlib::ShellOut.new('cat /etc/cloudstack/management/db.properties |grep "ENC("')
       conf_exist.run_command
       if conf_exist.exitstatus == 0
         return true

@@ -20,27 +20,25 @@
 
 module Cloudstack
   module GlobalSetting
-
     # Support whyrun
     def whyrun_supported?
       false
     end
-    
+
     def load_current_value(name)
       require 'cloudstack_ruby_client'
       # get CloudStack current value of the Global Setting
       client = CloudstackRubyClient::Client.new('http://localhost:8080/client/api/', @current_resource.admin_apikey, @current_resource.admin_secretkey, false)
-      client.list_configurations(:name => name)['configuration'].first['value']
+      client.list_configurations(name: name)['configuration'].first['value']
     end
-    
+
     def update_setting(name, value)
       require 'cloudstack_ruby_client'
       client = CloudstackRubyClient::Client.new('http://localhost:8080/client/api/', @current_resource.admin_apikey, @current_resource.admin_secretkey, false)
-      client.update_configuration({
-          :name => name,
-          :value => value
-      })
+      client.update_configuration(
+        name: name,
+        value: value
+      )
     end
-
   end
 end
