@@ -28,7 +28,7 @@ module Cloudstack
       template_id = Mixlib::ShellOut.new(template_cmd)
       template_id.run_command
       Chef::Log.debug "template id = #{template_id.stdout.chomp}"
-      return template_id.stdout.chomp
+      template_id.stdout.chomp
     end
 
     # Create or mount secondary storage path
@@ -46,7 +46,7 @@ module Cloudstack
 
     def download_systemvm_template
       # Create database configuration for cloudstack management server that will use and existing database.
-      #puts "Downloading system template from: #{@current_resource.url}"
+      # puts "Downloading system template from: #{@current_resource.url}"
       Chef::Log.info "Downloading system template for #{@current_resource.hypervisor}, this will take some time..."
       download_cmd = "/usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt  -m #{@current_resource.nfs_path} -u #{@current_resource.url} -h #{@current_resource.hypervisor} -F"
       download_template = Mixlib::ShellOut.new(download_cmd)

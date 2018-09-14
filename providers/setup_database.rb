@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-#include Chef::Mixin::ShellOut
+# include Chef::Mixin::ShellOut
 include Cloudstack::Helper
 include Cloudstack::Database
 
@@ -59,16 +59,14 @@ def load_current_resource
 
   if cloudstack_is_running?
     @current_resource.exists = true
-  else
-    if dbconf_exist?
-      if db_exist?(@current_resource.ip, @current_resource.user, @current_resource.password)
-        @current_resource.exists = true
-      else
-        Chef::Log.info 'Database server ready, not database found, creating it...'
-        @current_resource.exists = false
-      end
+  elsif dbconf_exist?
+    if db_exist?(@current_resource.ip, @current_resource.user, @current_resource.password)
+      @current_resource.exists = true
     else
+      Chef::Log.info 'Database server ready, not database found, creating it...'
       @current_resource.exists = false
     end
+  else
+    @current_resource.exists = false
   end
 end

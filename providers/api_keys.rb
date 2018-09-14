@@ -40,10 +40,10 @@ use_inline_resources if defined?(:use_inline_resources) # ~FC113
 
 action :create do
   wait_count = 0
-  until cloudstack_api_is_running? or wait_count == 5 do
+  until cloudstack_api_is_running? || wait_count == 5 do
     cloudstack_api_is_running?
     sleep(5)
-    wait_count +=1
+    wait_count += 1
     if wait_count == 1
       Chef::Log.info 'Waiting CloudStack to start'
     end
@@ -54,7 +54,7 @@ end
 
 action :reset do
   # force generate new API keys
-  #load_current_resource
+  # load_current_resource
   if cloudstack_is_running?
     if @current_resource.username == 'admin'
       converge_by('Reseting admin api keys') do

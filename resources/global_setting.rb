@@ -23,9 +23,9 @@ actions :update
 
 default_action :update
 
-attribute :name                 , :name_attribute => true, :kind_of => String
-attribute :value                , :kind_of => String
-attribute :admin_apikey         , :kind_of => String
-attribute :admin_secretkey      , :kind_of => String
+attribute :name,                  name_attribute: true, kind_of: String
+attribute :value,                 kind_of: String
+attribute :admin_apikey,          kind_of: String
+attribute :admin_secretkey,       kind_of: String
 
 attr_accessor :exists

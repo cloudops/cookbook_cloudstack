@@ -35,6 +35,6 @@ action :run do
 
   bash 'cloudstack-setup-management' do
     code "/usr/bin/cloudstack-setup-management #{params}"
-    not_if { ::File.exists?('/etc/cloudstack/management/tomcat6.conf') || ::File.exists?('/etc/cloudstack/management/server.xml')}
+    not_if { ::File.exist?('/etc/cloudstack/management/tomcat6.conf') || ::File.exist?('/etc/cloudstack/management/server.xml') }
   end
 end
