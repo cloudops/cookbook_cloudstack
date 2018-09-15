@@ -57,7 +57,6 @@ def load_current_resource
     if @current_resource.admin_apikey.nil?
       Chef::Log.error 'admin_apikey empty, cannot update Global Settings'
     else
-      client = CloudstackRubyClient::Client.new('http://localhost:8080/client/api/', @current_resource.admin_apikey, @current_resource.admin_secretkey, false)
       current_value = load_current_value(@current_resource.name)
       if current_value.nil?
         Chef::Log.error "Global Setting: #{@current_resource.name} not found"

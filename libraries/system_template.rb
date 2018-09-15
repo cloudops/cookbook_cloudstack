@@ -21,7 +21,7 @@
 module Cloudstack
   module SystemTemplate
     # retrieve template ID from database
-    def get_template_id
+    def db_template_id
       # get template ID from database to check path
       Chef::Log.debug 'Retrieve template ID from database'
       template_cmd = "mysql -h #{@current_resource.db_host} --user=#{@current_resource.db_user} --password=#{@current_resource.db_password} --skip-column-names -U cloud -e 'select max(id) from cloud.vm_template where type = \"SYSTEM\" and hypervisor_type = \"#{@current_resource.hypervisor}\" and removed is null'"

@@ -58,7 +58,7 @@ def load_current_resource
       cmd.error!
       @current_resource.url(cmd.stdout.chomp)
     end
-    template_id = get_template_id
+    template_id = db_template_id
     Chef::Log.debug "looking for template in #{@current_resource.nfs_path}/template/tmpl/1/#{template_id}"
     if ::File.exist?("#{@current_resource.nfs_path}/template/tmpl/1/#{template_id}/template.properties")
       Chef::Log.debug "template exists in #{@current_resource.nfs_path}/template/tmpl/1/#{template_id}"
