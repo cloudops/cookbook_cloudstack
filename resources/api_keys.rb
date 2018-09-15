@@ -2,11 +2,10 @@
 # Cookbook Name:: cloudstack
 # Resource:: api_keys
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
-# Copyright 2015, CloudOps, Inc.
+# Copyright 2018, CloudOps, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.require "system_vm_template"
-
+# you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
@@ -18,16 +17,15 @@
 # limitations under the License.
 #
 
-
 actions :create, :reset
 
 default_action :create
 
-attribute :username       , :name_attribute => true, :kind_of => String
-attribute :url            , :kind_of => String, :default => "http://localhost:8080/client/api"
-attribute :password       , :kind_of => String, :default => "password"
-attribute :admin_apikey   , :kind_of => String
-attribute :admin_secretkey, :kind_of => String
-attribute :ssl 			  , :equal_to => [true, false, 'true', 'false'], :default => false
+attribute :username,        name_attribute: true, kind_of: String
+attribute :url,             kind_of: String, default: 'http://localhost:8080/client/api'
+attribute :password,        kind_of: String, default: 'password'
+attribute :admin_apikey,    kind_of: String
+attribute :admin_secretkey, kind_of: String
+attribute :ssl,             equal_to: [true, false, 'true', 'false'], default: false
 
 attr_accessor :exists

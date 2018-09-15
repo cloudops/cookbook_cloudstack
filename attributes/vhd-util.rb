@@ -2,7 +2,7 @@
 # Cookbook Name:: cloudstack
 # Attribute:: vhd-util
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
-# Copyright 2015, CloudOps, Inc.
+# Copyright 2018, CloudOps, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,6 @@
 # limitations under the License.
 #
 
-# FOLLOWING ATTRIBUTES SHOULD NOT REQUIRE MODIFICATION  
-default['cloudstack']['vhd-util_url'] = "http://download.cloud.com.s3.amazonaws.com/tools/vhd-util"
-default['cloudstack']['vhd-util_path'] = "/usr/share/cloudstack-common/scripts/vm/hypervisor/xenserver"
+# FOLLOWING ATTRIBUTES SHOULD NOT REQUIRE MODIFICATION
+default['cloudstack']['vhd-util_url'] = 'http://download.cloud.com.s3.amazonaws.com/tools/vhd-util'
+default['cloudstack']['vhd-util_path'] = '/usr/share/cloudstack-common/scripts/vm/hypervisor/xenserver'

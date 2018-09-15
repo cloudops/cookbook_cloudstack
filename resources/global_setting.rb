@@ -2,7 +2,7 @@
 # Cookbook Name:: cloudstack
 # Resource:: global_setting
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
-# Copyright 2015, CloudOps, Inc.
+# Copyright 2018, CloudOps, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,9 +23,9 @@ actions :update
 
 default_action :update
 
-attribute :name                 , :name_attribute => true, :kind_of => String
-attribute :value                , :kind_of => String
-attribute :admin_apikey         , :kind_of => String
-attribute :admin_secretkey      , :kind_of => String
+attribute :name,                  name_attribute: true, kind_of: String
+attribute :value,                 kind_of: String
+attribute :admin_apikey,          kind_of: String
+attribute :admin_secretkey,       kind_of: String
 
 attr_accessor :exists

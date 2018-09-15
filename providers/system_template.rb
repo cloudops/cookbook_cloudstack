@@ -2,7 +2,7 @@
 # Cookbook Name:: cloudstack
 # Provider:: system_template
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
-# Copyright 2015, CloudOps, Inc.
+# Copyright 2018, CloudOps, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,21 +22,20 @@ include Chef::Mixin::ShellOut
 include Cloudstack::Helper
 include Cloudstack::SystemTemplate
 
-use_inline_resources
+use_inline_resources if defined?(:use_inline_resources) # ~FC113
 
 action :create do
   load_current_resource
 
-  #Chef::Log.info "creating cloudstack database"
+  # Chef::Log.info 'creating cloudstack database'
   unless @current_resource.exists
     converge_by("Downloading system template from: #{@current_resource.url}") do
-      #test_connection?(@current_resource.admin_apikey, @current_resource.admin_secretkey)
+      # test_connection?(@current_resource.admin_apikey, @current_resource.admin_secretkey)
       secondary_storage
       download_systemvm_template
     end
   end
 end
-
 
 def load_current_resource
   @current_resource = Chef::Resource::CloudstackSystemTemplate.new(@new_resource.name)
@@ -52,25 +51,22 @@ def load_current_resource
   # if CloudStack management-server is running, it mean a systemvm template as been downloaded.
   if cloudstack_is_running?
     @current_resource.exists = true
-  else
-    if db_exist?(@current_resource.db_host, @current_resource.db_user, @current_resource.db_password)
-      if @current_resource.url.nil?
-        cmd = Mixlib::ShellOut.new("mysql -h #{@current_resource.db_host} --user=#{@current_resource.db_user} --password='#{@current_resource.db_password}' --skip-column-names -U cloud -e 'select max(url) from cloud.vm_template where type = \"SYSTEM\" and hypervisor_type = \"#{@current_resource.hypervisor}\" and removed is null'")
-        cmd.run_command
-        cmd.error!
-        @current_resource.url(cmd.stdout.chomp)
-      end
-      template_id = get_template_id
-      Chef::Log.debug "looking for template in #{@current_resource.nfs_path}/template/tmpl/1/#{template_id}"
-      if ::File.exist?("#{@current_resource.nfs_path}/template/tmpl/1/#{template_id}/template.properties")
-        Chef::Log.debug "template exists in #{@current_resource.nfs_path}/template/tmpl/1/#{template_id}"
-        @current_resource.exists = true
-      else
-        @current_resource.exists = false
-      end
-    else
-      Chef::Log.error "Database not configured. Cannot retrieve Template URL"
+  elsif db_exist?(@current_resource.db_host, @current_resource.db_user, @current_resource.db_password)
+    if @current_resource.url.nil?
+      cmd = Mixlib::ShellOut.new("mysql -h #{@current_resource.db_host} --user=#{@current_resource.db_user} --password='#{@current_resource.db_password}' --skip-column-names -U cloud -e 'select max(url) from cloud.vm_template where type = \"SYSTEM\" and hypervisor_type = \"#{@current_resource.hypervisor}\" and removed is null'")
+      cmd.run_command
+      cmd.error!
+      @current_resource.url(cmd.stdout.chomp)
     end
+    template_id = db_template_id
+    Chef::Log.debug "looking for template in #{@current_resource.nfs_path}/template/tmpl/1/#{template_id}"
+    if ::File.exist?("#{@current_resource.nfs_path}/template/tmpl/1/#{template_id}/template.properties")
+      Chef::Log.debug "template exists in #{@current_resource.nfs_path}/template/tmpl/1/#{template_id}"
+      @current_resource.exists = true
+    else
+      @current_resource.exists = false
+    end
+  else
+    Chef::Log.error 'Database not configured. Cannot retrieve Template URL'
   end
-
 end

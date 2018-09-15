@@ -2,7 +2,7 @@
 # Cookbook Name:: cloudstack
 # Recipe:: repo_ubuntu
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
-# Copyright 2015, CloudOps, Inc.
+# Copyright 2018, CloudOps, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,22 +17,21 @@
 # limitations under the License.
 #
 
-include_recipe "apt"
+include_recipe 'apt'
 
 # add Apache CloudStack .deb repo
-apt_repository "cloudstack" do
+apt_repository 'cloudstack' do
   uri node['cloudstack']['repo_url']
   components [ node['cloudstack']['release_major'] ]
-  distribution "trusty"
+  distribution 'trusty'
   trusted node['cloudstack']['repo_trust']
-  unless node['cloudstack']['repo_sign'].empty? 
-    key node['cloudstack']['repo_sign'] 
+  unless node['cloudstack']['repo_sign'].empty?
+    key node['cloudstack']['repo_sign']
   end
   action :add
 end
 
-
 package 'libmysql-java' do
   action :install
-  #only_if { node['platform_version'] == "14.04" }
+  # only_if { node['platform_version'] == '14.04' }
 end

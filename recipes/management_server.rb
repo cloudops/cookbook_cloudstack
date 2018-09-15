@@ -1,7 +1,7 @@
 # Cookbook Name:: cloudstack
 # Recipe:: management_server
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
-# Copyright 2015, CloudOps, Inc.
+# Copyright 2018, CloudOps, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,22 +22,20 @@
 include_recipe 'cloudstack::default'
 include_recipe 'cloudstack::repo'
 
-package "cloudstack-management" do
-   action :install
-   if ! node['cloudstack']['version'].empty?
-     version node['cloudstack']['version']
-   end
+package 'cloudstack-management' do
+  action :install
+  unless node['cloudstack']['version'].empty?
+    version node['cloudstack']['version']
+  end
 end
 
 # tomcat6 package installation automatically start tomcat6 on port 8080.
 service 'tomcat6' do
   action [:stop, :disable]
-  only_if { platform?(%w{ubuntu debian}) }
+  only_if { platform?(%w(ubuntu debian)) }
 end
 
-
-include_recipe "cloudstack::vhd-util"
-
+include_recipe 'cloudstack::vhd-util'
 
 #
 # Set nproc limits for user cloud
@@ -47,11 +45,11 @@ template node['cloudstack']['nproc_limit_file'] do
   owner 'root'
   group 'root'
   mode 0755
-  variables :user          => node['cloudstack']['username'],
-            :hard          => node['cloudstack']['nproc_limit_hard'],
-            :soft          => node['cloudstack']['nproc_limit_soft'],
-            :recipe_file   => (__FILE__).to_s.split("cookbooks/").last,
-            :template_file => source.to_s
+  variables user:          node['cloudstack']['username'],
+            hard:          node['cloudstack']['nproc_limit_hard'],
+            soft:          node['cloudstack']['nproc_limit_soft'],
+            recipe_file:   __FILE__.to_s.split('cookbooks/').last,
+            template_file: source.to_s
 end
 
 #
@@ -62,23 +60,20 @@ template node['cloudstack']['nofile_limit_file'] do
   owner 'root'
   group 'root'
   mode 0755
-  variables :user          => node['cloudstack']['username'],
-            :hard          => node['cloudstack']['nofile_limit_hard'],
-            :soft          => node['cloudstack']['nofile_limit_soft'],
-            :recipe_file   => (__FILE__).to_s.split("cookbooks/").last,
-            :template_file => source.to_s
+  variables user:          node['cloudstack']['username'],
+            hard:          node['cloudstack']['nofile_limit_hard'],
+            soft:          node['cloudstack']['nofile_limit_soft'],
+            recipe_file:   __FILE__.to_s.split('cookbooks/').last,
+            template_file: source.to_s
 end
 
-
 # Configure sudo for user cloud
-include_recipe "sudo"
+include_recipe 'sudo'
 sudo 'cloud' do
   template 'sudoers_cloudstack.erb'
 end
 
-
-
-#service "cloudstack-management" do
+# service 'cloudstack-management' do
 #  supports :restart => true, :status => true, :start => true, :stop => true
 #  action :nothing
-#end
+# end

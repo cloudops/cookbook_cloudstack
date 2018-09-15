@@ -1,7 +1,7 @@
 # Cookbook Name:: cloudstack
 # Recipe:: mysql_conf
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
-# Copyright 2015, CloudOps, Inc.
+# Copyright 2018, CloudOps, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,11 +19,9 @@
 
 mysql_config 'default' do
   source 'cloudstack.cnf.erb'
-  variables ({
-    :innodb_rollback_on_timeout => node["cloudstack"]["mysql"]["innodb_rollback_on_timeout"],
-    :innodb_lock_wait_timeout => node["cloudstack"]["mysql"]["innodb_lock_wait_timeout"],
-    :max_connections => node["cloudstack"]["mysql"]["max_connections"]
-  })
+  variables(innodb_rollback_on_timeout: node['cloudstack']['mysql']['innodb_rollback_on_timeout'],
+            innodb_lock_wait_timeout:   node['cloudstack']['mysql']['innodb_lock_wait_timeout'],
+            max_connections:            node['cloudstack']['mysql']['max_connections'])
   action :create
   notifies :restart, 'mysql_service[default]', :immediately
 end

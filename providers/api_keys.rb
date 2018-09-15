@@ -2,7 +2,7 @@
 # Cookbook Name:: cloudstack
 # Provider:: api_keys
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
-# Copyright 2015, CloudOps, Inc.
+# Copyright 2018, CloudOps, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@
 # Generate api keys for specified CloudStack user.
 # currently work for admin account.
 
-
 require 'uri'
 require 'net/http'
 require 'json'
@@ -33,7 +32,7 @@ def whyrun_supported?
   true
 end
 
-use_inline_resources
+use_inline_resources if defined?(:use_inline_resources) # ~FC113
 
 #########
 # ACTIONS
@@ -41,13 +40,11 @@ use_inline_resources
 
 action :create do
   wait_count = 0
-  until cloudstack_api_is_running? or wait_count == 5 do
+  until cloudstack_api_is_running? || wait_count == 5
     cloudstack_api_is_running?
     sleep(5)
-    wait_count +=1
-    if wait_count == 1
-      Chef::Log.info "Waiting CloudStack to start"
-    end
+    wait_count += 1
+    Chef::Log.info 'Waiting CloudStack to start' if wait_count == 1
   end
 
   create_admin_apikeys
@@ -55,24 +52,23 @@ end
 
 action :reset do
   # force generate new API keys
-  #load_current_resource
+  # load_current_resource
   if cloudstack_is_running?
-    if @current_resource.username == "admin"
-      converge_by("Reseting admin api keys") do
+    if @current_resource.username == 'admin'
+      converge_by('Reseting admin api keys') do
         admin_keys = generate_admin_keys(@current_resource.url, @current_resource.password)
-        Chef::Log.info "admin api keys: Generate new"
-        node.normal["cloudstack"]["admin"]["api_key"] = admin_keys[:api_key]
-        node.normal["cloudstack"]["admin"]["secret_key"] = admin_keys[:secret_key]
+        Chef::Log.info 'admin api keys: Generate new'
+        node.normal['cloudstack']['admin']['api_key'] = admin_keys[:api_key]
+        node.normal['cloudstack']['admin']['secret_key'] = admin_keys[:secret_key]
         node.save unless Chef::Config[:solo]
         $admin_apikey = admin_keys[:api_key]
         $admin_secretkey = admin_keys[:secret_key]
       end
     end
   else
-    Chef::Log.error "CloudStack not running, cannot generate API keys."
+    Chef::Log.error 'CloudStack not running, cannot generate API keys.'
   end
 end
-
 
 def load_current_resource
   @current_resource = Chef::Resource::CloudstackApiKeys.new(@new_resource.name)
@@ -82,5 +78,4 @@ def load_current_resource
   @current_resource.admin_apikey(@new_resource.admin_apikey)
   @current_resource.admin_secretkey(@new_resource.admin_secretkey)
   @current_resource.ssl(@new_resource.ssl)
-  
 end

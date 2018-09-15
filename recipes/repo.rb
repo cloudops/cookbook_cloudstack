@@ -2,7 +2,7 @@
 # Cookbook Name:: cloudstack
 # Recipe:: repo
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
-# Copyright 2015, CloudOps, Inc.
+# Copyright 2018, CloudOps, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 # limitations under the License.
 #
 
-if platform?(%w{redhat centos fedora oracle})
-    include_recipe "cloudstack::repo_rhel"
-elsif platform?(%w{ubuntu debian})
-    include_recipe "cloudstack::repo_ubuntu"
+if platform?(%w(redhat centos fedora oracle))
+  include_recipe 'cloudstack::repo_rhel'
+elsif platform?(%w(ubuntu debian))
+  include_recipe 'cloudstack::repo_ubuntu'
 end

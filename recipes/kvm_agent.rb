@@ -1,7 +1,7 @@
 # Cookbook Name:: cloudstack
 # Recipe:: kvm_agent
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
-# Copyright 2015, CloudOps, Inc.
+# Copyright 2018, CloudOps, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@
 #
 # Install cloudstack-agent required on KVM hosts
 
-include_recipe "cloudstack::repo"
+include_recipe 'cloudstack::repo'
 
-package "cloudstack-agent" do
-   action :install
+package 'cloudstack-agent' do
+  action :install
 end
 
-service "cloudstack-agent" do
-   supports :status => true, :restart => true
-   action [ :enable, :start ]
+service 'cloudstack-agent' do
+  supports status: true, restart: true
+  action [ :enable, :start ]
 end
