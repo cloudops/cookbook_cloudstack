@@ -3,9 +3,10 @@ cloudstack CHANGELOG
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
-4.1.3
+5.0.0
 -----
 - pdion891 - update default version to 4.11.
+- khos2ow - fixed cookstyle and foodcritic issues.
 
 4.1.2
 -----
