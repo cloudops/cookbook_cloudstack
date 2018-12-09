@@ -1,0 +1,94 @@
+defaults: &defaults
+  docker:
+    - image: chef/chefdk
+  working_directory: ~/chef/cookbook/cookbook_cloudstack
+
+version: 2
+jobs:
+  checkout:
+    <<: *defaults
+    steps:
+    - checkout
+    - save_cache:
+        key: repo-{{ .Environment.CIRCLE_SHA1 }}
+        paths:
+          - ~/chef/cookbook/cookbook_cloudstack
+
+  cookstyle:
+    <<: *defaults
+    steps:
+    - restore_cache:
+        key: repo-{{ .Environment.CIRCLE_SHA1 }}
+    - run: chef --version
+    - run: chef exec cookstyle .
+
+  foodcritic:
+    <<: *defaults
+    steps:
+    - restore_cache:
+        key: repo-{{ .Environment.CIRCLE_SHA1 }}
+    - run: chef --version
+    - run: chef exec foodcritic .
+
+  chefspec:
+    <<: *defaults
+    steps:
+    - restore_cache:
+        key: repo-{{ .Environment.CIRCLE_SHA1 }}
+    - run: chef --version
+    - run: berks install
+    - run: chef exec rspec spec
+
+  kitchen:
+    machine:
+      services:
+        - docker
+    working_directory: ~/chef/cookbook/cookbook_cloudstack
+    steps:
+    - checkout
+    - run: |
+        if ! chef -v; then
+          wget https://packages.chef.io/files/stable/chefdk/3.5.13/ubuntu/18.04/chefdk_3.5.13-1_amd64.deb
+          sudo dpkg -i chefdk_3.5.13-1_amd64.deb
+        fi
+    - run: chef --version
+    - run: bundle install
+    - run: berks install
+    - run: KITCHEN_LOCAL_YAML=.kitchen.docker.yml kitchen test --destroy always
+
+workflows:
+  version: 2
+  build:
+    jobs:
+    - checkout:
+        filters:
+          tags:
+            only: /v.*/
+
+    - cookstyle:
+        requires:
+          - checkout
+        filters:
+          tags:
+            only: /v.*/
+
+    - foodcritic:
+        requires:
+          - checkout
+        filters:
+          tags:
+            only: /v.*/
+
+    - chefspec:
+        requires:
+          - checkout
+        filters:
+          tags:
+            only: /v.*/
+
+    - kitchen:
+        requires:
+          - checkout
+        filters:
+          tags:
+            only: /v.*/

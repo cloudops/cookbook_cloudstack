@@ -1,5 +1,8 @@
 # CloudStack Cookbook
 
+[![Build Status](https://circleci.com/gh/cloudops/cookbook_cloudstack.svg?style=svg)](https://circleci.com/gh/cloudops/cookbook_cloudstack)
+[![Cookbook Version](https://img.shields.io/cookbook/v/cloudstack.svg)](https://supermarket.chef.io/cookbooks/cloudstack)
+
 Install and configure [Apache Cloudstack](http://cloudstack.apache.org) using [Chef](http://www.chef.io/). A wrapper cookbook is prefered in order to Install Apache CloudStack properly, refer to [cloudstack_wrapper cookbook](https://github.com/cloudops/cookbook_cloudstack_wrapper) for example.
 
 Work with Chef 12 only.
