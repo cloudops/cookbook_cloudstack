@@ -1,25 +1,44 @@
-cloudstack Cookbook
-===================
+# CloudStack Cookbook
 
 Install and configure [Apache Cloudstack](http://cloudstack.apache.org) using [Chef](http://www.chef.io/). A wrapper cookbook is prefered in order to Install Apache CloudStack properly, refer to [cloudstack_wrapper cookbook](https://github.com/cloudops/cookbook_cloudstack_wrapper) for example.
-
 
 Work with Chef 12 only.
 
 Tested on CentOS 7 and Ubuntu 16.04
 
+## Table of Contents
 
-About Apache Cloudstack
------------------------
+- [About Apache Cloudstack](#about-apache-cloudstack)
+- [Requirements](#requirements)
+  - [Cookbooks](#cookbooks)
+- [Resources / Providers](#resources-providers)
+  - [cloudstack_setup_database](#cloudstack_setup_database)
+  - [cloudstack_system_template](#cloudstack_system_template)
+  - [cloudstack_setup_management](#cloudstack_setup_management)
+  - [cloudstack_api_keys](#cloudstack_api_keys)
+  - [cloudstack_global_setting](#cloudstack_global_setting)
+- [Recipes](#recipes)
+  - [cloudstack::management_server](#cloudstackmanagement_server)
+  - [cloudstack::usage](#cloudstackusage)
+  - [cloudstack::kvm_agent](#cloudstackkvm_agent)
+  - [cloudstack::vhd-util](#cloudstackvhd-util)
+  - [cloudstack::mysql_conf](#cloudstackmysql_conf)
+  - [cloudstack::eventbus](#cloudstackeventbus)
+  - [cloudstack::default](#cloudstackdefault)
+- [Attributes](#attributes)
+- [Contributing](#contributing)
+- [License and Authors](#license-and-authors)
+
+## About Apache Cloudstack
 
 Apache CloudStack is open source software designed to deploy and manage large networks of virtual machines, as a highly available, highly scalable Infrastructure as a Service (IaaS) cloud computing platform.
 
 More info on: http://cloudstack.apache.org/
 
-Requirements
-------------
+## Requirements
 
-#### cookbooks
+### Cookbooks
+
 - `yum` - packages management
 - `apt` - packages management
 - `mysql` - for MySQL database server and client
@@ -27,16 +46,13 @@ Requirements
 
 There is a dependency on Ruby gem [cloudstack_ruby_client](https://github.com/chipchilders/cloudstack_ruby_client) for chef which is handle in `recipe[cloudstack::default]`.
 
-Resources/Providers
--------------------
+## Resources / Providers
 
 ### cloudstack_setup_database
 
 Create MySQL database and connection configuration used by CloudStack management-server using `/usr/bin/cloudstack-setup-databases` utility.
 
-#### Examples
-
-``` ruby
+```ruby
 # Using attributes
 cloudstack_setup_database node["cloudstack"]["db"]["host"] do
   root_user     node["cloudstack"]["db"]["rootusername"]
@@ -58,9 +74,7 @@ end
 
 Download initial SystemVM template prior to initialize a CloudStack Region. cloudstack_system_template require access to CloudStack database which must be initated before executing this ressource. If no URL is provided cloudstack_system_template will use the default URL from the database if available to download the template.
 
-#### Examples
-
-``` ruby
+```ruby
 # Using attributes
 cloudstack_system_template 'xenserver' do
   url         node['cloudstack']['systemvm']['xenserver']
@@ -71,19 +85,20 @@ cloudstack_system_template 'xenserver' do
   db_host     node["cloudstack"]["db"]["host"]
 end
 ```
+
 Which is equivalent to:
 
-``` bash
+```bash
 /usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt \
--m /mnt/secondary \
--u http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.1-7-xen.vhd.bz2 \
--h xenserver \
--F
+  -m /mnt/secondary \
+  -u http://cloudstack.apt-get.eu/systemvm/4.4/systemvm64template-4.4.1-7-xen.vhd.bz2 \
+  -h xenserver \
+  -F
 ```
 
-Simpler example: 
+Simpler example:
 
-``` ruby
+```ruby
 # Using URL from CloudStack database
 cloudstack_system_template 'kvm' do
 end
@@ -102,10 +117,9 @@ cloudstack_setup_management node.name
 Generate api keys for account. Currently working only for admin account.
 
 Will update attributes:
+
 - `node["cloudstack"]["admin"]["api_key"]`
 - `node["cloudstack"]["admin"]["secret_key"]`
-
-#### examples
 
 ``` ruby
 # Create API key if now exist in Cloudstack and update node attributes
@@ -125,8 +139,6 @@ end
 
 Update Global Settings values.
 
-#### examples
-
 ``` ruby
 cloudstack_global_setting "expunge.delay" do
   value "80"
@@ -134,10 +146,7 @@ cloudstack_global_setting "expunge.delay" do
 end
 ```
 
-
-Recipes
--------
-
+## Recipes
 
 ### cloudstack::management_server
 
@@ -146,11 +155,9 @@ install CloudStack because of dependency such as MySQL server and system VM
 templates. Refer to [cloudstack_wrapper cookbook](https://github.com/cloudops/cookbook_cloudstack_wrapper)
 to install a fully working CloudStack management-server.
 
-
 ### cloudstack::usage
 
 Install, enable and start cloudstack-usage. cloudstack-usage is usefull to collect resource usage from account. This recipe make sure cloudstack-usage run on a cloudstack-management server as it is required.
-
 
 ### cloudstack::kvm_agent
 
@@ -158,40 +165,33 @@ Install, enable and start KVM cloudstack-agent. KVM host managed by CloudStack r
 
 Support Ubuntu and CentOS/RHEL KVM server.
 
-
 ### cloudstack::vhd-util
 
 Download the tool vhd-util which is not include in CloudStack packages and required to manage XenServer hosts.
-
 
 ### cloudstack::mysql_conf
 
 MySQL tunning based on official CloudStack documentation.
 
-
 ### cloudstack::eventbus
 
 Configure CloudStack to send Events into RabbitMQ message bus. Work for CloudStack 4.3 and latest. RabbitMQ must be installed and configured somewhere, default values are for localhost.
-
 
 ### cloudstack::default
 
 Chef Required dependencies in order to interact with CloudStack.
 
-
-Attributes
-----------
+## Attributes
 
 Attributes can be customized. The cookbook does not support encrypted data bag usage for now.
 
-- <tt>node['cloudstack']['yum_repo']</tt> - yum repo url to use, default: http://cloudstack.apt-get.eu/rhel/4.3/
-- <tt>node['cloudstack']['apt_repo']</tt> - apt repo url to use, default: http://cloudstack.apt-get.eu/ubuntu
-- <tt>node['cloudstack']['release_major']</tt> - Major CloudStack release ex: 4.3 or 4.2
-- <tt>node['cloudstack']['version']</tt> - Package version ex: 4.2.1-1.el6
+- `node['cloudstack']['yum_repo']` - YUM repo URL to use, default: http://cloudstack.apt-get.eu/rhel/4.3/
+- `node['cloudstack']['apt_repo']` - APT repo URL to use, default: http://cloudstack.apt-get.eu/ubuntu
+- `node['cloudstack']['release_major']` - Major CloudStack release ex: 4.3 or 4.2
+- `node['cloudstack']['version']` - Package version ex: 4.2.1-1.el6
 
+## Contributing
 
-Contributing
-------------
 TODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.
 
 e.g.
@@ -203,17 +203,16 @@ e.g.
 5. Run the tests, ensuring they all pass
 6. Submit a Pull Request using Github
 
+## License and Authors
 
-License and Authors
--------------------
 - Author:: Pierre-Luc Dion (<pdion@cloud.ca>)
-- Author:: Khosrow Moossavi (kmoossavi@cloud.ca)
+- Author:: Khosrow Moossavi (<kmoossavi@cloud.ca>)
 
 Some snippets have been taken from: [schubergphilis/cloudstack-cookbook](https://github.com/schubergphilis/cloudstack-cookbook)
+
 - Author:: Roeland Kuipers (<rkuipers@schubergphilis.com>)  
 - Author:: Sander Botman (<sbotman@schubergphilis.com>)
 - Author:: Hugo Trippaers (<htrippaers@schubergphilis.com>)
-
 
 ```text
 Copyright:: Copyright (c) 2018 CloudOps Inc.
