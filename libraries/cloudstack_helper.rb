@@ -41,15 +41,32 @@ module Cloudstack
       false
     end
 
-    # Test if CloudStack Database already exist
+    def verify_db_connection?(db_host = 'localhost', db_user = 'root', db_password = 'password')
+      # Make sure we can connect to db server
+      conn_db_test = "mysql -h #{db_host} -u #{db_user} -p#{db_password} -e 'show databases;'"
+      begin
+        if shell_out!(conn_db_test).error?
+          false
+        else
+          true
+        end
+      rescue
+        false
+      end
+    end
+
     def db_exist?(db_host = 'localhost', db_user = 'cloud', db_password = 'password')
+      # Test if CloudStack Database already exist
+      # if fail to connect with db_user, return false;
       conn_db_test = "mysql -h #{db_host} -u #{db_user} -p#{db_password} -e 'show databases;'|grep cloud"
-      conn_db_test_out = Mixlib::ShellOut.new(conn_db_test)
-      conn_db_test_out.run_command
-      if conn_db_test_out.exitstatus == 0
-        return true
-      else
-        return false
+      begin
+        if shell_out!(conn_db_test).error?
+          false
+        else
+          true
+        end
+      rescue
+        false
       end
     end
 

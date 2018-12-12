@@ -23,7 +23,7 @@ module Cloudstack
   module Database
     def init_database
       # Create database in MySQL using cloudstack-setup-databases scripts
-      setup_db_init_cmd = "#{@scriptname} #{@current_resource.user}:#{@current_resource.password}@#{@current_resource.ip} --deploy-as=#{@current_resource.root_user}:#{@current_resource.root_password} -m #{@current_resource.management_server_key} -k #{@current_resource.database_key}"
+      setup_db_init_cmd = "#{@scriptname} #{new_resource.user}:#{new_resource.password}@#{new_resource.ip} --deploy-as=#{new_resource.root_user}:#{new_resource.root_password} -m #{new_resource.management_server_key} -k #{new_resource.database_key}"
       cloudstack_setup_database = Mixlib::ShellOut.new(setup_db_init_cmd)
       cloudstack_setup_database.run_command
       if cloudstack_setup_database.exitstatus == 0
@@ -32,7 +32,7 @@ module Cloudstack
 
     def init_config_database
       # Create database configuration for cloudstack management server that will use and existing database.
-      setup_db_init_cmd = "#{@scriptname} #{@current_resource.user}:#{@current_resource.password}@#{@current_resource.ip} -m #{@current_resource.management_server_key} -k #{@current_resource.database_key}"
+      setup_db_init_cmd = "#{@scriptname} #{new_resource.user}:#{new_resource.password}@#{new_resource.ip} -m #{new_resource.management_server_key} -k #{new_resource.database_key}"
       cloudstack_setup_database = Mixlib::ShellOut.new(setup_db_init_cmd)
       cloudstack_setup_database.run_command
       if cloudstack_setup_database.exitstatus == 0

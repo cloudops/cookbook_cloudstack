@@ -3,6 +3,12 @@ cloudstack CHANGELOG
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
+6.0.0
+-----
+- pdion891 - Fix Chef14 issues on CentOS 7 for cloudstack_setup_database ressource.
+           - Added circle-ci recipe for automated CI.
+           - Remove management of sudoers file, pkgs are taking care of it.
+
 5.0.0
 -----
 - pdion891 - update default version to 4.11.
