@@ -65,10 +65,8 @@ action_class do
         current_value = load_current_value(new_resource.name)
         if current_value.nil?
           Chef::Log.error "Global Setting: #{new_resource.name} not found"
-        elsif new_resource.value == current_value
-          true
         else
-          false
+          new_resource.value == current_value
         end
       end
     else
