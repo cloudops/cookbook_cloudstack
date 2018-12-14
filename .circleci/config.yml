@@ -19,30 +19,42 @@ jobs:
     steps:
     - restore_cache:
         key: repo-{{ .Environment.CIRCLE_SHA1 }}
-    - run: chef --version
-    - run: chef exec cookstyle .
+    - run:
+        name: "Chef version"
+        command: chef --version
+    - run:
+        name: "Check Cookstyle"
+        command: chef exec cookstyle .
 
   foodcritic:
     <<: *defaults
     steps:
     - restore_cache:
         key: repo-{{ .Environment.CIRCLE_SHA1 }}
-    - run: chef --version
-    - run: chef exec foodcritic .
+    - run:
+        name: "Chef version"
+        command: chef --version
+    - run:
+        name: "Check Foodcritic"
+        command: chef exec foodcritic .
 
   chefspec:
     <<: *defaults
     steps:
     - restore_cache:
         key: repo-{{ .Environment.CIRCLE_SHA1 }}
-    - run: chef --version
-    - run: chef exec rspec spec
+    - run:
+        name: "Chef version"
+        command: chef --version
+    - run:
+        name: "Check Serverspec"
+        command: chef exec rspec spec
 
   kitchen:
-    machine:
-      services:
-        - docker
-    working_directory: ~/cookbook/cookbook_cloudstack
+    machine: true
+    services:
+      - docker
+    working_directory: $CIRCLE_WORKING_DIRECTORY
     steps:
     - checkout
     - run: |
@@ -50,11 +62,18 @@ jobs:
           wget https://packages.chef.io/files/stable/chefdk/3.5.13/ubuntu/18.04/chefdk_3.5.13-1_amd64.deb
           sudo dpkg -i chefdk_3.5.13-1_amd64.deb
         fi
-    - run: chef --version
-    - run: bundle install
-    - run: berks install
-    - run: berks update
-    - run: KITCHEN_LOCAL_YAML=.kitchen.docker.yml kitchen test --destroy always
+    - run:
+        name: "Chef version"
+        command: chef --version
+    - run:
+        name: "Install dependencies"
+        command: |
+          bundle install
+          berks install
+          berks update
+    - run:
+        name: "Run Kitchen test"
+        command: KITCHEN_LOCAL_YAML=.kitchen.docker.yml kitchen test --destroy always
 
 workflows:
   version: 2
