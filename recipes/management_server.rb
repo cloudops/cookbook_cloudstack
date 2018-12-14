@@ -36,4 +36,3 @@ service 'tomcat6' do
 end
 
 include_recipe 'cloudstack::vhd-util'
-

@@ -9,10 +9,10 @@ version          '6.0.1'
 source_url       'https://github.com/cloudops/cookbook_cloudstack'
 issues_url       'https://github.com/cloudops/cookbook_cloudstack/issues'
 
-depends 'yum'  , '> 3.0'
-depends 'apt'  , '> 2.0'
+depends 'yum',   '> 3.0'
+depends 'apt',   '> 2.0'
 depends 'mysql', '~> 8.0'
-depends 'sudo' , '>= 2.6.0'
+depends 'sudo',  '>= 2.6.0'
 
 supports 'centos'
 supports 'redhat'
