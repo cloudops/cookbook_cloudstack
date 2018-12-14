@@ -19,13 +19,60 @@
 # Configure Global Settings
 ###############################################################################
 
-actions :update
-
 default_action :update
 
-attribute :name,                  name_attribute: true, kind_of: String
-attribute :value,                 kind_of: String
-attribute :admin_apikey,          kind_of: String
-attribute :admin_secretkey,       kind_of: String
+property :name,                  String, name_property: true
+property :value,                 String
+property :admin_apikey,          String
+property :admin_secretkey,       String
 
-attr_accessor :exists
+actions :update do
+  unless new_resource.admin_apikey.nil?
+    unless current_value_exists?
+      converge_by("Update Global Setting: #{new_resource.name} to #{new_resource.value}") do
+        # test_connection?(new_resource.admin_apikey, new_resource.admin_secretkey)
+        update_setting(new_resource.name, new_resource.value)
+      end
+    end
+  end
+end
+
+action_class do
+  require 'json'
+  require 'cloudstack_ruby_client'
+  include Cloudstack::Helper
+  include Cloudstack::Database
+
+  def load_current_value(name)
+    # get CloudStack current value of the Global Setting
+    client = CloudstackRubyClient::Client.new('http://localhost:8080/client/api/', new_resource.admin_apikey, new_resource.admin_secretkey, false)
+    client.list_configurations(name: name)['configuration'].first['value']
+  end
+
+  def update_setting(name, value)
+    client = CloudstackRubyClient::Client.new('http://localhost:8080/client/api/', new_resource.admin_apikey, new_resource.admin_secretkey, false)
+    client.update_configuration(
+      name: name,
+      value: value
+    )
+  end
+
+  def current_value_exists
+    if cloudstack_is_running?
+      if new_resource.admin_apikey.nil? || new_resource.admin_secretkey.nil?
+        Chef::Log.error 'admin_apikey empty, cannot update Global Settings'
+      else
+        current_value = load_current_value(new_resource.name)
+        if current_value.nil?
+          Chef::Log.error "Global Setting: #{new_resource.name} not found"
+        elsif new_resource.value == current_value
+          true
+        else
+          false
+        end
+      end
+    else
+      Chef::Log.error 'CloudStack not running, cannot update Global Settings.'
+    end
+  end
+end
