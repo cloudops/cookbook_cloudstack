@@ -21,10 +21,10 @@ include_recipe 'apt'
 
 # add Apache CloudStack .deb repo
 apt_repository 'cloudstack' do
-  uri node['cloudstack']['repo_url']
-  components [ node['cloudstack']['release_major'] ]
+  uri          node['cloudstack']['repo_url']
+  components   [ node['cloudstack']['release_major'] ]
   distribution 'trusty'
-  trusted node['cloudstack']['repo_trust']
+  trusted      node['cloudstack']['repo_trust']
   unless node['cloudstack']['repo_sign'].empty?
     key node['cloudstack']['repo_sign']
   end
