@@ -39,9 +39,7 @@ end
 
 action_class do
   require 'json'
-  require 'cloudstack_ruby_client'
   include Cloudstack::Helper
-  include Cloudstack::Database
 
   def load_current_value(name)
     # get CloudStack current value of the Global Setting

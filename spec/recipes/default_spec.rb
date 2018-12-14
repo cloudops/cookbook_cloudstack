@@ -1,26 +1,9 @@
-require_relative '../spec_helper'
+require 'spec_helper'
 
-describe 'cloudstack::default' do
-  subject { ChefSpec::Runner.new.converge(described_recipe) }
-
-  # Write quick specs using `it` blocks with implied subjects
-  it { should do_something('...') }
-
-  # Write full examples using the `expect` syntax
-  it 'does something' do
-    expect(subject).to do_something('...')
+describe 'cloudstack::management_server' do
+  let(:chef_run) do
+    ChefSpec::ServerRunner.new.converge(described_recipe)
   end
-
-  # Use an explicit subject
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
-
-  it 'does something' do
-    expect(chef_run).to do_something('...')
-  end
-end
-
-describe 'cloudstack::cloudstack_management' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
 
   it 'installs cloudstack-management' do
     expect(chef_run).to install_package('cloudstack-management')

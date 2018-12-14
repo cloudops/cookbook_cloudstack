@@ -68,7 +68,6 @@ action_class do
   require 'json'
 
   include Cloudstack::Helper
-  include Cloudstack::ApiKeys
 
   def create_admin_apikeys
     # 1. make sure cloudstack is running
