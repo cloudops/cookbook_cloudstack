@@ -1,10 +1,12 @@
 # CloudStack Cookbook
 
+[![Build Status](https://circleci.com/gh/cloudops/cookbook_cloudstack.svg?style=svg)](https://circleci.com/gh/cloudops/cookbook_cloudstack)
+[![Cookbook Version](https://img.shields.io/cookbook/v/cloudstack.svg)](https://supermarket.chef.io/cookbooks/cloudstack)
+
 Install and configure [Apache Cloudstack](http://cloudstack.apache.org) using [Chef](http://www.chef.io/). A wrapper cookbook is prefered in order to Install Apache CloudStack properly, refer to [cloudstack_wrapper cookbook](https://github.com/cloudops/cookbook_cloudstack_wrapper) for example.
 
-Work with Chef 12 only.
-
-Tested on CentOS 7 and Ubuntu 16.04
+Tested on CentOS 7
+Some parts work with Ubuntu 16.04 but this cookbook does not perform all configuraiton required for CloudStack Management-server on Ubuntu.
 
 ## Table of Contents
 
@@ -42,7 +44,7 @@ More info on: http://cloudstack.apache.org/
 - `yum` - packages management
 - `apt` - packages management
 - `mysql` - for MySQL database server and client
-- `sudo` - to configure sudoers for user "cloud"
+- `sudo` - to configure sudoers for user `cloud`
 
 There is a dependency on Ruby gem [cloudstack_ruby_client](https://github.com/chipchilders/cloudstack_ruby_client) for chef which is handle in `recipe[cloudstack::default]`.
 
@@ -54,18 +56,18 @@ Create MySQL database and connection configuration used by CloudStack management
 
 ```ruby
 # Using attributes
-cloudstack_setup_database node["cloudstack"]["db"]["host"] do
-  root_user     node["cloudstack"]["db"]["rootusername"]
-  root_password node["cloudstack"]["db"]["rootpassword"]
-  user          node["cloudstack"]["db"]["username"]
-  password      node["cloudstack"]["db"]["password"]
+cloudstack_setup_database node['cloudstack']['db']['host'] do
+  root_user     node['cloudstack']['db']['rootusername']
+  root_password node['cloudstack']['db']['rootpassword']
+  user          node['cloudstack']['db']['username']
+  password      node['cloudstack']['db']['password']
   action        :create
 end
 ```
 
 ```ruby
 # using mysql cookbook and CloudStack default passwords
-cloudstack_setup_database node["cloudstack"]["db"]["host"] do
+cloudstack_setup_database node['cloudstack']['db']['host'] do
   action        :create
 end
 ```
@@ -78,11 +80,11 @@ Download initial SystemVM template prior to initialize a CloudStack Region. clou
 # Using attributes
 cloudstack_system_template 'xenserver' do
   url         node['cloudstack']['systemvm']['xenserver']
-  nfs_path    node["cloudstack"]["secondary"]["path"]
-  nfs_server  node["cloudstack"]["secondary"]["host"]
-  db_user     node["cloudstack"]["db"]["username"]
-  db_password node["cloudstack"]["db"]["password"]
-  db_host     node["cloudstack"]["db"]["host"]
+  nfs_path    node['cloudstack']['secondary']['path']
+  nfs_server  node['cloudstack']['secondary']['host']
+  db_user     node['cloudstack']['db']['username']
+  db_password node['cloudstack']['db']['password']
+  db_host     node['cloudstack']['db']['host']
 end
 ```
 
@@ -118,19 +120,19 @@ Generate api keys for account. Currently working only for admin account.
 
 Will update attributes:
 
-- `node["cloudstack"]["admin"]["api_key"]`
-- `node["cloudstack"]["admin"]["secret_key"]`
+- `node['cloudstack']['admin']['api_key']`
+- `node['cloudstack']['admin']['secret_key']`
 
 ``` ruby
 # Create API key if now exist in Cloudstack and update node attributes
-cloudstack_api_keys "admin" do
+cloudstack_api_keys 'admin' do
   action :create
 end
 ```
 
 ``` ruby
 # Generate new API Keys
-cloudstack_api_keys "admin" do
+cloudstack_api_keys 'admin' do
   action :reset
 end
 ```
@@ -140,9 +142,9 @@ end
 Update Global Settings values.
 
 ``` ruby
-cloudstack_global_setting "expunge.delay" do
-  value "80"
-  notifies :restart, "service[cloudstack-management]", :delayed
+cloudstack_global_setting 'expunge.delay' do
+  value '80'
+  notifies :restart, 'service[cloudstack-management]', :delayed
 end
 ```
 

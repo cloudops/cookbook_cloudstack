@@ -21,20 +21,26 @@
 ###############################################################################
 
 property :host,    String,        name_property: true
-property :tomcat7, [true, false], required: false, default: false
+property :tomcat7, [true, false], required: false, default: true
 property :https,   [true, false], required: false, default: false
 property :nostart, [true, false], required: false, default: false
 
-tomcat7 = true if node['platform'] == 'centos' && node['platform_version'].split('.')[0] == '7'
-
 action :run do
+  new_resource.tomcat7 = true if node['platform'] == 'centos' && node['platform_version'].split('.')[0] == '7'
   params = ''
-  params += ' --tomcat7' if tomcat7
-  params += ' --https'   if https
-  params += ' --nostart' if nostart
-
-  bash 'cloudstack-setup-management' do
-    code "/usr/bin/cloudstack-setup-management #{params}"
-    not_if { ::File.exist?('/etc/cloudstack/management/tomcat6.conf') || ::File.exist?('/etc/cloudstack/management/server.xml') }
+  params += ' --tomcat7' if new_resource.tomcat7
+  params += ' --https'   if new_resource.https
+  params += ' --nostart' if new_resource.nostart
+  unless ::File.exist?('/etc/cloudstack/management/tomcat6.conf') || ::File.exist?('/etc/cloudstack/management/server.xml')
+    converge_by('Configure embedded tomcat') do
+      bash 'cloudstack-setup-management' do
+        code <<-EOH
+          /usr/bin/cloudstack-setup-management #{params}
+          if [ ! -f /etc/cloudstack/management/server.xml ]; then
+            touch /etc/cloudstack/management/server.xml
+          fi
+          EOH
+      end
+    end
   end
 end
