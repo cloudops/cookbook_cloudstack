@@ -75,7 +75,7 @@ jobs:
           berks update
     - run:
         name: "Run Kitchen test"
-        command: kitchen test --destroy always
+        command: KITCHEN_LOCAL_YAML=.kitchen.docker.yml kitchen test --destroy always
 
 workflows:
   version: 2
