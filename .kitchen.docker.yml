@@ -8,8 +8,17 @@ provisioner:
 platforms:
   # - name: ubuntu-14.04
   # - name: ubuntu-16.04
+  # - name: ubuntu-18.04
   # - name: centos-6
   - name: centos-7
+    driver_config:
+      run_command: /usr/sbin/init
+      privileged: true
+      provision_command:
+        - systemctl enable sshd.service
+  # - name: debian-7
+  # - name: debian-8
+  # - name: debian-9
 
 suites:
   - name: default
