@@ -6,24 +6,6 @@ provisioner:
   name: chef_solo
 
 platforms:
-  - name: ubuntu-14.04
-    driver_config:
-      run_command: /bin/systemd
-      privileged: true
-  - name: ubuntu-16.04
-    driver_config:
-      run_command: /bin/systemd
-      privileged: true
-  - name: ubuntu-18.04
-    driver_config:
-      run_command: /bin/systemd
-      privileged: true
-  - name: centos-6
-    driver_config:
-      run_command: /usr/sbin/init
-      privileged: true
-      provision_command:
-        - systemctl enable sshd.service
   - name: centos-7
     driver_config:
       run_command: /usr/sbin/init
