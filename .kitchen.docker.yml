@@ -34,5 +34,5 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[cloudstack::circle-ci]
+      - recipe[test::all-in-one]
     attributes:
