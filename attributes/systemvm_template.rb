@@ -32,6 +32,15 @@ when '4.11'
     'hyperv'    => 'http://download.cloudstack.org/systemvm/4.11/systemvmtemplate-4.11.1-hyperv.vhd.zip',
     'ovm3'      => 'http://download.cloudstack.org/systemvm/4.11/systemvmtemplate-4.11.1-ovm.raw.bz2',
   }
+when '4.10'
+  default['cloudstack']['systemvm'] = {
+    'xenserver' => 'http://download.cloudstack.org/systemvm/4.10/systemvm64template-4.10-4.10.0.0-xen.vhd.bz2',
+    'vmware'    => 'http://download.cloudstack.org/systemvm/4.10/systemvm64template-4.10-4.10.0.0-vmware.ova',
+    'kvm'       => 'http://download.cloudstack.org/systemvm/4.10/systemvm64template-4.10-4.10.0.0-kvm.qcow2.bz2',
+    'lxc'       => 'http://download.cloudstack.org/systemvm/4.10/systemvm64template-4.10-4.10.0.0-kvm.qcow2.bz2',
+    'hyperv'    => 'http://download.cloudstack.org/systemvm/4.10/systemvm64template-4.10-4.10.0.0-hyperv.vhd.zip',
+    'ovm3'      => 'http://download.cloudstack.org/systemvm/4.10/systemvm64template-4.10-4.10.0.0-ovm.raw.bz2',
+  }
 when '4.6', '4.7', '4.8', '4.9'
   default['cloudstack']['systemvm'] = {
     'xenserver' => 'http://cloudstack.apt-get.eu/systemvm/4.6/systemvm64template-4.6.0-xen.vhd.bz2',
