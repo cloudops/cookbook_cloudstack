@@ -3,6 +3,10 @@ cloudstack CHANGELOG
 
 This file is used to list changes made in each version of the co-cloudstack cookbook.
 
+6.0.1
+-----
+- khos2ow - Add missing SystemVM URLs for CloudStack 4.10
+
 6.0.0
 -----
 - pdion891 - Fix Chef14 issues on CentOS 7 for cloudstack_setup_database ressource.
