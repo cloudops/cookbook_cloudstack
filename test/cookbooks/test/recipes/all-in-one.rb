@@ -38,6 +38,17 @@ cloudstack_setup_database '127.0.0.1' do
   action        :create
 end
 
+# download initial systemvm template
+cloudstack_system_template 'xenserver' do
+  nfs_path    node['cloudstack']['secondary']['path']
+  nfs_server  node['cloudstack']['secondary']['host']
+  url         node['cloudstack']['systemvm']['xenserver']
+  db_user     node['cloudstack']['db']['user']
+  db_password node['cloudstack']['db']['password']
+  db_host     node['cloudstack']['db']['host']
+  action :create
+end
+
 cloudstack_setup_management node.name do
   tomcat7 true
 end
