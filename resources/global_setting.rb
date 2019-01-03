@@ -55,7 +55,7 @@ action_class do
     )
   end
 
-  def current_value_exists
+  def current_value_exists?
     if cloudstack_is_running?
       if new_resource.admin_apikey.nil? || new_resource.admin_secretkey.nil?
         Chef::Log.error 'admin_apikey empty, cannot update Global Settings'
