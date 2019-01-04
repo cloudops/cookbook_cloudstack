@@ -40,10 +40,12 @@ end
 
 # download initial systemvm template
 cloudstack_system_template 'xenserver' do
-  nfs_path   node['cloudstack']['secondary']['path']
-  nfs_server node['cloudstack']['secondary']['host']
-  url        node['cloudstack']['systemvm']['xenserver']
-  action     :create
+  nfs_path    node['cloudstack']['secondary']['path']
+  nfs_server  node['cloudstack']['secondary']['host']
+  url         node['cloudstack']['systemvm']['xenserver']
+  db_user     'cloud'
+  db_password 'cloud'
+  action      :create
 end
 
 cloudstack_setup_management node.name do
