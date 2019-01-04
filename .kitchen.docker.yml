@@ -1,17 +1,98 @@
+# ---
+# driver:
+#   name: docker
+
+# provisioner:
+#   name: chef_solo
+
+# platforms:
+#   - name: ubuntu-14.04
+#     driver_config:
+#       run_command: /bin/systemd
+#       privileged: true
+#   - name: ubuntu-16.04
+#     driver_config:
+#       run_command: /bin/systemd
+#       privileged: true
+#   - name: ubuntu-18.04
+#     driver_config:
+#       run_command: /bin/systemd
+#       privileged: true
+#   - name: centos-6
+#     driver_config:
+#       run_command: /usr/sbin/init
+#       privileged: true
+#       provision_command:
+#         - systemctl enable sshd.service
+#   - name: centos-7
+#     driver_config:
+#       run_command: /usr/sbin/init
+#       privileged: true
+#       provision_command:
+#         - systemctl enable sshd.service
+
+# suites:
+#   - name: default
+#     run_list:
+#       - recipe[test::all-in-one]
+#     attributes:
+
+
 ---
 driver:
-  name: docker
+  name: dokken
+  privileged: true # because Docker and SystemD/Upstart
+  chef_version: <%= ENV['CHEF_VERSION'] || 'current' %>
+
+transport:
+  name: dokken
 
 provisioner:
-  name: chef_solo
+  name: dokken
 
 platforms:
+  # - name: ubuntu-14.04
+  #   driver_config:
+  #     run_command: /bin/systemd
+  #     privileged: true
+
+  - name: ubuntu-16.04
+    driver:
+      image: dokken/ubuntu-16.04
+      pid_one_command: /bin/systemd
+      intermediate_instructions:
+        - RUN /usr/bin/apt-get update
+
+  - name: ubuntu-18.04
+    driver:
+      image: dokken/ubuntu-18.04
+      pid_one_command: /bin/systemd
+      intermediate_instructions:
+        - RUN /usr/bin/apt-get update
+
+  - name: debian-8
+    driver:
+      image: dokken/debian-8
+      pid_one_command: /bin/systemd
+      intermediate_instructions:
+        - RUN /usr/bin/apt-get update
+
+  - name: debian-9
+    driver:
+      image: dokken/debian-9
+      pid_one_command: /bin/systemd
+      intermediate_instructions:
+        - RUN /usr/bin/apt-get update
+
+  - name: centos-6
+    driver:
+      image: dokken/centos-6
+      pid_one_command: /sbin/init
+
   - name: centos-7
-    driver_config:
-      run_command: /usr/sbin/init
-      privileged: true
-      provision_command:
-        - systemctl enable sshd.service
+    driver:
+      image: dokken/centos-7
+      pid_one_command: /usr/lib/systemd/systemd
 
 suites:
   - name: default

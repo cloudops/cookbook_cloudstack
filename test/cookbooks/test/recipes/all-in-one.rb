@@ -9,25 +9,36 @@
 include_recipe 'cloudstack::management_server'
 include_recipe 'cloudstack::usage'
 
-execute 'set mysql root password' do
-  command 'mysqladmin -h 127.0.0.1 -u root password password'
-  action :nothing
-end
+# # install mysql-server
+# package 'mariadb-server'
+# # include_recipe 'mariadb::server'
 
-# install mysql-server
-package 'mariadb-server'
+include_recipe 'mariadb::default'
+
+# mariadb_repository 'install'
+
+mariadb_server_install 'package' do
+  action [:install, :create]
+  password 'create'
+end
 
 if platform?(%w(redhat centos fedora oracle))
   service 'mariadb' do
     action :start
-    notifies :run, 'execute[set mysql root password]', :immediately
+    # notifies :run, 'execute[set mysql root password]', :immediately
   end
 elsif platform?(%w(ubuntu debian))
   service 'mysql' do
     action :start
-    notifies :run, 'execute[set mysql root password]', :immediately
+    # notifies :run, 'execute[set mysql root password]', :immediately
   end
 end
+
+# execute 'set mysql root password' do
+#   command 'mysqladmin -h 127.0.0.1 -u root password password'
+#   # action :nothing
+#   action :run
+# end
 
 # init database and connection configuration
 cloudstack_setup_database '127.0.0.1' do

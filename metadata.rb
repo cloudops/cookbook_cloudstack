@@ -4,7 +4,7 @@ maintainer_email 'pdion@cloud.ca'
 license          'Apache-2.0'
 description      'Installs/Configures cloudstack'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '6.1.0'
+version          '6.2.0'
 
 source_url       'https://github.com/cloudops/cookbook_cloudstack'
 issues_url       'https://github.com/cloudops/cookbook_cloudstack/issues'

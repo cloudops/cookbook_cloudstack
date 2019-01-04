@@ -2,6 +2,10 @@
 
 This file is used to list changes made in each version of the cloudstack cookbook.
 
+## 6.2.0
+
+- khos2ow - Support Ubuntu and Debian
+
 ## 6.1.0
 
 - khos2ow - Remove Provider and enhance Custom Resources
