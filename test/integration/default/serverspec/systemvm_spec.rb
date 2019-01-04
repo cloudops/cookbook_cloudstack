@@ -7,12 +7,12 @@ end
 
 describe file('/data/secondary/template/tmpl/1/1') do
   it { should be_directory }
-end  
+end
 
 describe file('/data/secondary/template/tmpl/1/1/template.properties') do
   it { should be_file }
   it { should exist }
-end  
+end
 
 # describe file('/data/primary') do
 #   it { should be_directory }
