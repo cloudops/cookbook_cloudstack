@@ -22,7 +22,9 @@
 
 package 'cloudstack-usage' do
   action :install
-  # only_if { node.recipes.include?('cloudstack::management_server') }
+  unless node['cloudstack']['version'].empty?
+    version node['cloudstack']['version']
+  end
 end
 
 service 'cloudstack-usage' do

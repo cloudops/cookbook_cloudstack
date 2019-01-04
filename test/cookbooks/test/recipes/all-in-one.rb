@@ -1,6 +1,6 @@
 #
-# Cookbook Name:: cloudstack
-# Recipe:: default
+# Cookbook Name:: test
+# Recipe:: all
 # Author:: Pierre-Luc Dion (<pdion@cloudops.com>)
 # Copyright 2018, CloudOps, Inc.
 #
@@ -9,13 +9,13 @@
 include_recipe 'cloudstack::management_server'
 include_recipe 'cloudstack::usage'
 
-# install mysql-server
-package 'mariadb-server'
-
 execute 'set mysql root password' do
   command 'mysqladmin -h 127.0.0.1 -u root password password'
   action :nothing
 end
+
+# install mysql-server
+package 'mariadb-server'
 
 if platform?(%w(redhat centos fedora oracle))
   service 'mariadb' do
@@ -36,6 +36,16 @@ cloudstack_setup_database '127.0.0.1' do
   user          'cloud'
   password      'cloud'
   action        :create
+end
+
+# download initial systemvm template
+cloudstack_system_template 'xenserver' do
+  nfs_path    node['cloudstack']['secondary']['path']
+  nfs_server  node['cloudstack']['secondary']['host']
+  url         node['cloudstack']['systemvm']['xenserver']
+  db_user     'cloud'
+  db_password 'cloud'
+  action      :create
 end
 
 cloudstack_setup_management node.name do

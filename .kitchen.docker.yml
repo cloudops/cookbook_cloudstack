@@ -1,12 +1,17 @@
 ---
 driver:
-  name: vagrant
+  name: docker
 
 provisioner:
   name: chef_solo
 
 platforms:
   - name: centos-7
+    driver_config:
+      run_command: /usr/sbin/init
+      privileged: true
+      provision_command:
+        - systemctl enable sshd.service
 
 suites:
   - name: default
