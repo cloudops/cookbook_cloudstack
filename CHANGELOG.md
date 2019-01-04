@@ -2,6 +2,11 @@
 
 This file is used to list changes made in each version of the cloudstack cookbook.
 
+## 6.1.0
+
+- khos2ow - Remove Provider and enhance Custom Resources
+- khos2ow - Fix CircleCI configs
+
 ## 6.0.1
 
 - khos2ow - Add missing SystemVM URLs for CloudStack 4.10
